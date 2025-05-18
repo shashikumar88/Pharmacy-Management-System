@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Information</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --accent-color: #198754;
+            --info-color: #0dcaf0;
+        }
+        
+        /* Information Button Styles */
+        .info-btn {
+            background-color: var(--info-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .info-btn:hover {
+            background-color: #0aa2c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(13, 202, 240, 0.3);
+            color: white;
+        }
+        
+        .info-btn-outline {
+            border: 2px solid var(--info-color);
+            color: var(--info-color);
+            background: transparent;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .info-btn-outline:hover {
+            background-color: var(--info-color);
+            color: white;
+        }
+        
+        /* Info Card Styles */
+        .info-card {
+            border-left: 4px solid var(--info-color);
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* Tooltip Style */
+        .info-tooltip-btn {
+            background: none;
+            border: none;
+            color: var(--info-color);
+            padding: 0 5px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Example 1: Basic Information Button -->
+    <section class="container my-5 text-center">
+        <h3 class="mb-4">Need More Information?</h3>
+        <button class="info-btn">
+            <i class="fas fa-info-circle me-2"></i> View Details
+        </button>
+    </section>
+    
+    <!-- Example 2: Information Card with Button -->
+    <section class="container my-5">
+        <div class="card info-card border-0">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4><i class="fas fa-info-circle text-info me-2"></i> Prescription Information</h4>
+                        <p class="mb-0">Learn about our prescription services and how to upload yours</p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <button class="info-btn-outline px-4">
+                            <i class="fas fa-book-open me-2"></i> Read More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 3: Information Button Group -->
+    <section class="container my-5">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <button class="info-btn w-100 py-3">
+                    <i class="fas fa-question-circle me-2"></i> FAQs
+                </button>
+            </div>
+            <div class="col-md-4">
+                <button class="info-btn w-100 py-3" style="background-color: var(--primary-color);">
+                    <i class="fas fa-file-alt me-2"></i> Policies
+                </button>
+            </div>
+            <div class="col-md-4">
+                <button class="info-btn w-100 py-3" style="background-color: var(--accent-color);">
+                    <i class="fas fa-shield-alt me-2"></i> Safety Info
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 4: Tooltip Information Button -->
+    <section class="container my-5">
+        <div class="card p-4">
+            <h5>Medication Instructions 
+                <button class="info-tooltip-btn" data-bs-toggle="tooltip" data-bs-placement="right" 
+                        title="Always take this medication as prescribed by your doctor">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+            </h5>
+            <p>Take 1 tablet daily with food</p>
+        </div>
+    </section>
+    
+    <!-- Example 5: Floating Information Button -->
+    <button class="position-fixed bottom-0 end-0 m-4 btn btn-info rounded-circle p-3" 
+            style="width: 60px; height: 60px; z-index: 1000;">
+        <i class="fas fa-info fa-lg"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Example click handler for information buttons
+        document.querySelectorAll('.info-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // In a real implementation, this would show information
+                alert('More information would be displayed here based on the context.');
+            });
+        });
+    </script>
+</body>
+</html>

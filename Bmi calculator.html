@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced BMI Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .bmi-calculator {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .bmi-result {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            display: none;
+        }
+        .progress-bar-animated {
+            transition: width 1s ease-in-out;
+        }
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            color: #2575fc;
+        }
+        .info-card {
+            border-left: 4px solid #2575fc;
+            transition: all 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="bmi-calculator">
+                    <h2 class="text-center mb-4"><i class="fas fa-calculator feature-icon"></i>Advanced BMI Calculator</h2>
+                    
+                    <!-- Unit Toggle -->
+                    <div class="form-check form-switch mb-4">
+                        <input class="form-check-input" type="checkbox" id="unitToggle">
+                        <label class="form-check-label" for="unitToggle">Use Imperial Units (lbs/ft)</label>
+                    </div>
+                    
+                    <form id="bmiForm">
+                        <!-- Personal Information -->
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" min="2" max="120" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Gender</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="gender" id="male" autocomplete="off" checked>
+                                    <label class="btn btn-outline-primary" for="male"><i class="fas fa-mars"></i> Male</label>
+                                    
+                                    <input type="radio" class="btn-check" name="gender" id="female" autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="female"><i class="fas fa-venus"></i> Female</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Height and Weight Inputs -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="height" class="form-label">Height</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="height" placeholder="e.g. 175" required>
+                                    <span class="input-group-text" id="heightUnit">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="weight" class="form-label">Weight</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="weight" placeholder="e.g. 70" required>
+                                    <span class="input-group-text" id="weightUnit">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-calculator me-2"></i>Calculate BMI
+                        </button>
+                    </form>
+                    
+                    <!-- Results Section -->
+                    <div class="bmi-result mt-4" id="bmiResult">
+                        <div class="row">
+                            <div class="col-md-6 text-center mb-3 mb-md-0">
+                                <h3>Your BMI</h3>
+                                <h1 class="display-3 fw-bold" id="bmiValue">0</h1>
+                                <h4 id="bmiCategory" class="fw-bold">Category</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="mb-3">BMI Scale</h5>
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div id="bmiProgress" class="progress-bar progress-bar-animated" role="progressbar"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-4">
+                                    <small>Underweight (<18.5)</small>
+                                    <small>Normal (18.5-24.9)</small>
+                                    <small>Overweight (25-29.9)</small>
+                                    <small>Obese (30+)</small>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Ideal Weight Range:</h6>
+                                    <p class="mb-1" id="idealWeight"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Daily Calorie Needs:</h6>
+                                    <p class="mb-1" id="calorieNeeds"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weight Trend Chart -->
+                    <div class="mt-4 p-3 bg-white rounded" id="weightTrend" style="display:none">
+                        <h5 class="mb-3"><i class="fas fa-chart-line feature-icon"></i>Your Weight Trend</h5>
+                        <canvas id="trendChart" height="150"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Health Information Cards -->
+                <div class="row mt-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card info-card h-100">
+                            <div class="card-body">
+                                <h5><i class="fas fa-heartbeat feature-icon"></i>Health Risks</h5>
+                                <ul class="list-group list-group-flush" id="healthRisks">
+                                    <!-- Filled by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card info-card h-100">
+                            <div class="card-body">
+                                <h5><i class="fas fa-utensils feature-icon"></i>Diet Tips</h5>
+                                <ul class="list-group list-group-flush" id="dietTips">
+                                    <!-- Filled by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card info-card h-100">
+                            <div class="card-body">
+                                <h5><i class="fas fa-running feature-icon"></i>Exercise Advice</h5>
+                                <ul class="list-group list-group-flush" id="exerciseAdvice">
+                                    <!-- Filled by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Unit Toggle Functionality
+        let isMetric = true;
+        document.getElementById('unitToggle').addEventListener('change', function() {
+            isMetric = !isMetric;
+            document.getElementById('heightUnit').textContent = isMetric ? 'cm' : 'in';
+            document.getElementById('weightUnit').textContent = isMetric ? 'kg' : 'lbs';
+        });
+
+        // BMI Calculation
+        document.getElementById('bmiForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get input values
+            let height = parseFloat(document.getElementById('height').value);
+            let weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value);
+            const isMale = document.getElementById('male').checked;
+            
+            // Convert to metric if imperial
+            if (!isMetric) {
+                // Convert inches to cm
+                height = height * 2.54;
+                // Convert lbs to kg
+                weight = weight * 0.453592;
+            }
+            
+            // Convert cm to m
+            height = height / 100;
+            
+            // Calculate BMI
+            const bmi = weight / (height * height);
+            
+            // Display result
+            document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+            
+            // Determine category and set progress bar
+            let category = '';
+            let progress = 0;
+            let bgColor = '';
+            let healthRisks = [];
+            let dietTips = [];
+            let exerciseAdvice = [];
+            
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                progress = (bmi / 18.5) * 25;
+                bgColor = 'bg-info';
+                healthRisks = ['Nutritional deficiency', 'Osteoporosis', 'Decreased immunity'];
+                dietTips = ['Increase calorie intake', 'Eat nutrient-dense foods', 'More frequent meals'];
+                exerciseAdvice = ['Strength training', 'Yoga for appetite', 'Light cardio'];
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = 'Normal weight';
+                progress = 25 + ((bmi - 18.5) / (25 - 18.5)) * 25;
+                bgColor = 'bg-success';
+                healthRisks = ['Low risk', 'Maintain healthy lifestyle'];
+                dietTips = ['Balanced diet', 'Regular meals', 'Stay hydrated'];
+                exerciseAdvice = ['150 mins moderate exercise', 'Strength training 2x/week', 'Stay active'];
+            } else if (bmi >= 25 && bmi < 30) {
+                category = 'Overweight';
+                progress = 50 + ((bmi - 25) / (30 - 25)) * 25;
+                bgColor = 'bg-warning';
+                healthRisks = ['Type 2 diabetes', 'High blood pressure', 'Heart disease'];
+                dietTips = ['Reduce processed foods', 'More vegetables', 'Control portions'];
+                exerciseAdvice = ['30 mins daily exercise', 'Cardio workouts', 'Reduce sedentary time'];
+            } else {
+                category = 'Obese';
+                progress = 75 + ((Math.min(bmi, 40) - 30) / (40 - 30)) * 25;
+                bgColor = 'bg-danger';
+                healthRisks = ['Severe heart disease', 'Stroke risk', 'Sleep apnea', 'Certain cancers'];
+                dietTips = ['Medical supervision', 'Reduced calorie intake', 'Whole foods'];
+                exerciseAdvice = ['Start with walking', 'Consult doctor', 'Gradual increase'];
+            }
+            
+            document.getElementById('bmiCategory').textContent = category;
+            const progressBar = document.getElementById('bmiProgress');
+            progressBar.style.width = `${Math.min(progress, 100)}%`;
+            progressBar.className = `progress-bar progress-bar-animated ${bgColor}`;
+            
+            // Calculate ideal weight range
+            const idealWeightMin = 18.5 * (height * height);
+            const idealWeightMax = 24.9 * (height * height);
+            document.getElementById('idealWeight').textContent = 
+                `${idealWeightMin.toFixed(1)}kg - ${idealWeightMax.toFixed(1)}kg`;
+            
+            // Calculate calorie needs (simplified Harris-Benedict)
+            let bmr;
+            if (isMale) {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height*100) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height*100) - (4.330 * age);
+            }
+            
+            const maintenanceCalories = Math.round(bmr * 1.55); // Moderate activity
+            document.getElementById('calorieNeeds').textContent = 
+                `About ${maintenanceCalories} kcal/day for maintenance`;
+            
+            // Update health information
+            updateList('healthRisks', healthRisks);
+            updateList('dietTips', dietTips);
+            updateList('exerciseAdvice', exerciseAdvice);
+            
+            // Show result
+            document.getElementById('bmiResult').style.display = 'block';
+            
+            // Update weight history and chart
+            updateWeightHistory(weight);
+        });
+        
+        function updateList(elementId, items) {
+            const listElement = document.getElementById(elementId);
+            listElement.innerHTML = '';
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.textContent = item;
+                listElement.appendChild(li);
+            });
+        }
+        
+        // Weight History and Trend Chart
+        let weightHistory = JSON.parse(localStorage.getItem('weightHistory')) || [];
+        
+        function updateWeightHistory(currentWeight) {
+            // Add current weight to history (max 7 entries)
+            weightHistory.push({
+                date: new Date().toLocaleDateString(),
+                weight: currentWeight
+            });
+            
+            if (weightHistory.length > 7) {
+                weightHistory = weightHistory.slice(-7);
+            }
+            
+            localStorage.setItem('weightHistory', JSON.stringify(weightHistory));
+            
+            if (weightHistory.length > 1) {
+                updateTrendChart();
+            }
+        }
+        
+        function updateTrendChart() {
+            document.getElementById('weightTrend').style.display = 'block';
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            
+            if (window.weightChart) {
+                window.weightChart.destroy();
+            }
+            
+            window.weightChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: weightHistory.map(entry => entry.date),
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: weightHistory.map(entry => entry.weight),
+                        borderColor: '#2575fc',
+                        backgroundColor: 'rgba(37, 117, 252, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

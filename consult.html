@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consult Doctor | MediCare</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --accent-color: #198754;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding-top: 80px;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(13, 110, 253, 0.8), rgba(13, 110, 253, 0.9)), 
+                        url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            border-radius: 0;
+        }
+        
+        .doctor-card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            height: 100%;
+        }
+        
+        .doctor-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .doctor-img {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .specialty-badge {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .availability-badge {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .consultation-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-card {
+            border-left: 4px solid var(--primary-color);
+            background-color: white;
+            border-radius: 0 8px 8px 0;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .faq-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-card:hover {
+            border-left-color: var(--primary-color);
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shop.html">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="consult.html">Consult Doctor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="prescriptions.html">Prescriptions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="health-tools.html">Health Tools</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="wishlist.html"><i class="fas fa-heart"></i></a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="account.html"><i class="fas fa-user"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-3">Online Doctor Consultation</h1>
+                    <p class="lead mb-4">Get medical advice and prescriptions from licensed doctors without leaving your home</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn btn-light btn-lg px-4" data-bs-toggle="modal" data-bs-target="#consultNowModal">
+                            <i class="fas fa-comment-medical me-2"></i> Consult Now
+                        </button>
+                        <a href="#doctors" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-user-md me-2"></i> Browse Doctors
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="container mb-5">
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3">How Online Consultation Works</h2>
+                <p class="text-muted">Get medical help in just a few simple steps</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="consultation-card text-center h-100">
+                    <div class="step-icon mx-auto">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <a href="choose doctor.html"><h4>1. Choose a Doctor</h4>
+                    <p class="text-muted">Select from our network of licensed physicians specializing in various fields.</p>
+                </div></a>
+            </div>
+            <div class="col-md-4">
+                <div class="consultation-card text-center h-100">
+                    <div class="step-icon mx-auto">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <a href="book appoinment.html"><h4>2. Book Appointment</h4>
+                    <p class="text-muted">Pick a convenient time slot that works for you - available 24/7.</p>
+                </div></a>
+            </div>
+            <div class="col-md-4">
+                <div class="consultation-card text-center h-100">
+                    <div class="step-icon mx-auto">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <a href="video consultation.html"><h4>3. Video Consultation</h4>
+                    <p class="text-muted">Connect via secure video call for diagnosis and treatment advice.</p>
+                </div></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctors Section -->
+    <section class="container mb-5" id="doctors">
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3">Our Licensed Doctors</h2>
+                <p class="text-muted">Consult with experienced physicians from various specialties</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <!-- Doctor 1 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="doctor-card">
+                    <img src="https://belenuschampionhospitals.com/wp-content/uploads/2024/02/Dr-Lakshmi-V.jpg" alt="Doctor" class="doctor-img">
+                    <div class="p-3">
+                        <h5 class="mb-1">Dr. Sarah Johnson</h5>
+                        <p class="text-muted small mb-2">MD, Internal Medicine</p>
+                        <div class="d-flex flex-wrap gap-1 mb-2">
+                            <span class="badge specialty-badge">General Physician</span>
+                            <span class="badge specialty-badge">Diabetes</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge availability-badge">Available Now</span>
+                            <span class="text-warning small">
+                                <i class="fas fa-star"></i> 4.9 (127)
+                            </span>
+                        </div>
+                        <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">
+                            <i class="fas fa-calendar-alt me-2"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Doctor 2 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="doctor-card">
+                    <img src="https://www.bombayhospitalindore.com/resources/assets/images/team/dr-ravi-rathi.jpg" alt="Doctor" class="doctor-img">
+                    <div class="p-3">
+                        <h5 class="mb-1">Dr. Michael Chen</h5>
+                        <p class="text-muted small mb-2">MD, Pediatrics</p>
+                        <div class="d-flex flex-wrap gap-1 mb-2">
+                            <span class="badge specialty-badge">Pediatrics</span>
+                            <span class="badge specialty-badge">Allergies</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary">Available Tomorrow</span>
+                            <span class="text-warning small">
+                                <i class="fas fa-star"></i> 4.8 (98)
+                            </span>
+                        </div>
+                        <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">
+                            <i class="fas fa-calendar-alt me-2"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Doctor 3 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="doctor-card">
+                    <img src="https://priyaivfhospital.com/wp-content/uploads/2021/03/Dr.Priya-Patel-1024x672.jpeg" alt="Doctor" class="doctor-img">
+                    <div class="p-3">
+                        <h5 class="mb-1">Dr. Priya Patel</h5>
+                        <p class="text-muted small mb-2">MD, Dermatology</p>
+                        <div class="d-flex flex-wrap gap-1 mb-2">
+                            <span class="badge specialty-badge">Dermatology</span>
+                            <span class="badge specialty-badge">Skin Care</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge availability-badge">Available Now</span>
+                            <span class="text-warning small">
+                                <i class="fas fa-star"></i> 4.9 (156)
+                            </span>
+                        </div>
+                        <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">
+                            <i class="fas fa-calendar-alt me-2"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Doctor 4 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="doctor-card">
+                    <img src="https://tse2.mm.bing.net/th?id=OIP.tCKuPZiFAe9IduM_VQXZBQHaHa&pid=Api&P=0&h=180" alt="Doctor" class="doctor-img">
+                    <div class="p-3">
+                        <h5 class="mb-1">Dr. Robert Wilson</h5>
+                        <p class="text-muted small mb-2">MD, Cardiology</p>
+                        <div class="d-flex flex-wrap gap-1 mb-2">
+                            <span class="badge specialty-badge">Cardiology</span>
+                            <span class="badge specialty-badge">Hypertension</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary">Available in 2 hours</span>
+                            <span class="text-warning small">
+                                <i class="fas fa-star"></i> 4.7 (84)
+                            </span>
+                        </div>
+                        <button class="btn btn-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#bookAppointmentModal">
+                            <i class="fas fa-calendar-alt me-2"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="#" class="btn btn-outline-primary">View All Doctors</a>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="bg-light py-5 mb-5">
+        <div class="container">
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8 text-center">
+                    <h2 class="mb-3">Why Choose MediCare Online Consultation</h2>
+                    <p class="text-muted">Quality healthcare from the comfort of your home</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="consultation-card h-100">
+                        <div class="d-flex">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-shield-alt fa-2x"></i>
+                            </div>
+                            <div>
+                                <h4>Secure & Private</h4>
+                                <p class="text-muted">HIPAA-compliant platform ensuring complete confidentiality of your medical information.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="consultation-card h-100">
+                        <div class="d-flex">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-clock fa-2x"></i>
+                            </div>
+                            <div>
+                                <h4>24/7 Availability</h4>
+                                <p class="text-muted">Connect with doctors anytime, anywhere - no more waiting for appointments.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="consultation-card h-100">
+                        <div class="d-flex">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-prescription fa-2x"></i>
+                            </div>
+                            <div>
+                                <h4>E-Prescriptions</h4>
+                                <p class="text-muted">Get prescriptions delivered to your preferred pharmacy or directly to your doorstep.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="consultation-card h-100">
+                        <div class="d-flex">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-dollar-sign fa-2x"></i>
+                            </div>
+                            <div>
+                                <h4>Affordable</h4>
+                                <p class="text-muted">Quality healthcare at a fraction of the cost of traditional visits.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="consultation-card h-100">
+                        <div class="d-flex">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-file-medical fa-2x"></i>
+                            </div>
+                            <div>
+                                <h4>Medical Records</h4>
+                                <p class="text-muted">Access your consultation history and prescriptions anytime in your account.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="consultation-card h-100">
+                        <div class="d-flex">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-heartbeat fa-2x"></i>
+                            </div>
+                            <div>
+                                <h4>Follow-up Care</h4>
+                                <p class="text-muted">Easy follow-up consultations to monitor your progress and adjust treatment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="container mb-5">
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3">What Our Patients Say</h2>
+                <p class="text-muted">Trusted by thousands of patients nationwide</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card h-100">
+                    <div class="d-flex mb-3">
+                        <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Patient" class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-1">Jennifer K.</h5>
+                            <div class="text-warning mb-1">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="text-muted small">Hypertension</p>
+                        </div>
+                    </div>
+                    <p>"The convenience of consulting with Dr. Wilson from home while managing my blood pressure has been life-changing. The prescriptions go straight to MediCare pharmacy for delivery."</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card h-100">
+                    <div class="d-flex mb-3">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Patient" class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-1">Michael T.</h5>
+                            <div class="text-warning mb-1">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="text-muted small">Diabetes Management</p>
+                        </div>
+                    </div>
+                    <p>"As someone with diabetes, being able to quickly consult with Dr. Johnson about medication adjustments without taking time off work has been invaluable."</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card h-100">
+                    <div class="d-flex mb-3">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Patient" class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-1">Sarah M.</h5>
+                            <div class="text-warning mb-1">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p class="text-muted small">Pediatric Care</p>
+                        </div>
+                    </div>
+                    <p>"When my son developed a rash at night, we could immediately video chat with Dr. Chen who diagnosed it and sent the prescription to our local pharmacy. No ER visit needed!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="container mb-5">
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-3">Frequently Asked Questions</h2>
+                <p class="text-muted">Find answers to common questions about online consultations</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="faq-card">
+                    <h5 class="mb-3">What conditions can be treated through online consultation?</h5>
+                    <p class="text-muted">Our doctors can diagnose and treat a wide range of non-emergency conditions including cold/flu, allergies, skin conditions, chronic disease management, mental health, and more. For emergencies, please visit the nearest hospital.</p>
+                </div>
+                <div class="faq-card">
+                    <h5 class="mb-3">How much does an online consultation cost?</h5>
+                    <p class="text-muted">Consultation fees vary by doctor and specialty, typically ranging from $25 to $75. This is often less than traditional in-person visits and may be covered by your insurance (check with your provider).</p>
+                </div>
+                <div class="faq-card">
+                    <h5 class="mb-3">Can doctors prescribe medications online?</h5>
+                    <p class="text-muted">Yes, our licensed physicians can prescribe most medications when appropriate, except for controlled substances. Prescriptions can be sent directly to your preferred pharmacy or to MediCare for home delivery.</p>
+                </div>
+                <div class="faq-card">
+                    <h5 class="mb-3">What technology do I need for a video consultation?</h5>
+                    <p class="text-muted">You'll need a smartphone, tablet, or computer with a camera and microphone, plus a stable internet connection. No special software is required - we'll send you a secure link to join the video call.</p>
+                </div>
+                <div class="faq-card">
+                    <h5 class="mb-3">Is online consultation covered by insurance?</h5>
+                    <p class="text-muted">Many insurance plans now cover telehealth services. We accept most major insurance providers and can provide documentation for reimbursement if needed. Check with your insurance provider for specific coverage details.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bg-primary text-white py-5 mb-5">
+        <div class="container text-center">
+            <h2 class="mb-3">Ready to Consult with a Doctor?</h2>
+            <p class="lead mb-4">Get medical advice without leaving your home. Available 24/7.</p>
+            <button class="btn btn-light btn-lg px-5" data-bs-toggle="modal" data-bs-target="#consultNowModal">
+                <i class="fas fa-comment-medical me-2"></i> Start Consultation
+            </button>
+        </div>
+    </section>
+
+    <!-- Consult Now Modal -->
+    <div class="modal fade" id="consultNowModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Start Your Consultation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-4" id="consultTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="new-consult-tab" data-bs-toggle="tab" data-bs-target="#new-consult" type="button" role="tab">
+                                New Consultation
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="followup-tab" data-bs-toggle="tab" data-bs-target="#followup" type="button" role="tab">
+                                Follow-up Visit
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="consultTabsContent">
+                        <div class="tab-pane fade show active" id="new-consult" role="tabpanel">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label">What medical concern would you like to discuss?</label>
+                                    <textarea class="form-control" rows="3" placeholder="Briefly describe your symptoms or reason for consultation"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Preferred Doctor Specialty</label>
+                                    <select class="form-select">
+                                        <option selected>Any Available Doctor</option>
+                                        <option>General Physician</option>
+                                        <option>Pediatrics</option>
+                                        <option>Dermatology</option>
+                                        <option>Cardiology</option>
+                                        <option>Mental Health</option>
+                                        <option>Women's Health</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">When would you like to consult?</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="consultTime" id="now" checked>
+                                        <label class="form-check-label" for="now">
+                                            As soon as possible (next available doctor)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="consultTime" id="later">
+                                        <label class="form-check-label" for="later">
+                                            Schedule for specific time
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search me-2"></i> Find Available Doctors
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="followup" role="tabpanel">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label">Select Previous Consultation</label>
+                                    <select class="form-select">
+                                        <option selected>Select a previous visit</option>
+                                        <option>Consultation with Dr. Johnson - Oct 15, 2023</option>
+                                        <option>Consultation with Dr. Chen - Sep 28, 2023</option>
+                                        <option>Consultation with Dr. Patel - Aug 5, 2023</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Reason for Follow-up</label>
+                                    <textarea class="form-control" rows="3" placeholder="What would you like to discuss in this follow-up?"></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-calendar-alt me-2"></i> Schedule Follow-up
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Appointment Modal -->
+    <div class="modal fade" id="bookAppointmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Book Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Select Date & Time</label>
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="date" class="form-control" min="2023-11-01">
+                                </div>
+                                <div class="col-6">
+                                    <select class="form-select">
+                                        <option>10:00 AM</option>
+                                        <option>10:30 AM</option>
+                                        <option>11:00 AM</option>
+                                        <option>11:30 AM</option>
+                                        <option>12:00 PM</option>
+                                        <option>2:00 PM</option>
+                                        <option>2:30 PM</option>
+                                        <option>3:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-text">Available time slots shown in green</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Reason for Visit</label>
+                            <textarea class="form-control" rows="3" placeholder="Briefly describe your symptoms or reason for consultation"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Consultation Fee: $45</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="insuranceCheck">
+                                <label class="form-check-label" for="insuranceCheck">
+                                    I'd like to use my insurance
+                                </label>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calendar-check me-2"></i> Confirm Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" height="40" class="mb-3">
+                    <p class="text-muted small">Your trusted online pharmacy for genuine medicines, health products, and doctor consultations.</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-2 mb-4 mb-md-0">
+                    <h5 class="h6">Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Prescription</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">OTC Medicines</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Wellness</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Personal Care</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Devices</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-lg-2 mb-4 mb-md-0">
+                    <h5 class="h6">Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Doctor Consultation</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Medicine Reminder</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Tools</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Symptom Checker</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <h5 class="h6">Contact Us</h5>
+                    <ul class="list-unstyled text-muted small">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i

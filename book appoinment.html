@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Book Doctor Appointment</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --accent-color: #198754;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e7e9ed;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .appointment-hero {
+            background: linear-gradient(135deg, #0d6efd, #198754);
+            color: white;
+            padding: 3rem 0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .doctor-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .doctor-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .time-slot {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 8px 12px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .time-slot:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .time-slot.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .form-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .confirmation-section {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .specialty-badge {
+            background-color: #e9ecef;
+            color: var(--dark-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="bg-primary text-white py-2 d-none d-md-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <i class="fas fa-phone-alt me-2"></i> 24/7 Customer Support: 1-800-MEDICARE
+                </div>
+                <div class="col-md-6 text-end">
+                    <i class="fas fa-truck me-2"></i> Free shipping on orders over $50
+                    <span class="mx-3">|</span>
+                    <i class="fas fa-map-marker-alt me-2"></i> Track Order
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" height="50">
+            </a>
+            
+            <!-- Search Bar -->
+            <div class="mx-lg-3 flex-grow-1">
+                <div class="autocomplete" style="position: relative;">
+                    <input class="form-control search-box" type="search" placeholder="Search medicines, health products..." aria-label="Search">
+                    <button class="btn btn-primary position-absolute end-0 top-0 rounded-pill" type="submit" style="height: 100%;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div id="autocomplete-results" class="autocomplete-items"></div>
+                </div>
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="#"><i class="fas fa-user me-1"></i> Account</a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="#"><i class="fas fa-heart me-1"></i> Wishlist</a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart me-1"></i> Cart <span class="badge bg-danger rounded-pill">3</span></a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="#"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Hero Section -->
+        <div class="appointment-hero">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="display-5 fw-bold mb-3">Book a Doctor Appointment</h1>
+                        <p class="lead mb-0">Consult with our licensed doctors online or schedule an in-person visit.</p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                        <i class="fas fa-calendar-check fa-4x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointment Form Section -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="form-section mb-4" id="appointmentForm">
+                    <h3 class="mb-4">Appointment Details</h3>
+                    
+                    <div class="mb-4">
+                        <h5>Select Doctor</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="doctor-card bg-white">
+                                    <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg" alt="Doctor" class="doctor-img">
+                                    <div class="p-3">
+                                        <h5>Dr. Sarah Johnson</h5>
+                                        <p class="text-muted small mb-2">General Physician</p>
+                                        <div class="mb-2">
+                                            <span class="specialty-badge">Primary Care</span>
+                                            <span class="specialty-badge">Pediatrics</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary w-100 select-doctor" data-doctor="1">Select</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="doctor-card bg-white">
+                                    <img src="https://img.freepik.com/free-photo/portrait-confident-male-doctor-man_171337-2285.jpg" alt="Doctor" class="doctor-img">
+                                    <div class="p-3">
+                                        <h5>Dr. Michael Chen</h5>
+                                        <p class="text-muted small mb-2">Cardiologist</p>
+                                        <div class="mb-2">
+                                            <span class="specialty-badge">Cardiology</span>
+                                            <span class="specialty-badge">Internal Medicine</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary w-100 select-doctor" data-doctor="2">Select</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Appointment Type</h5>
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="appointmentType" id="videoConsult" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="videoConsult">
+                                <i class="fas fa-video me-2"></i> Video Consultation
+                            </label>
+                            
+                            <input type="radio" class="btn-check" name="appointmentType" id="clinicVisit" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="clinicVisit">
+                                <i class="fas fa-clinic-medical me-2"></i> Clinic Visit
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Select Date</h5>
+                        <input type="date" class="form-control" id="appointmentDate" min="">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Available Time Slots</h5>
+                        <div class="d-flex flex-wrap" id="timeSlots">
+                            <span class="time-slot">9:00 AM</span>
+                            <span class="time-slot">9:30 AM</span>
+                            <span class="time-slot">10:00 AM</span>
+                            <span class="time-slot">10:30 AM</span>
+                            <span class="time-slot">11:00 AM</span>
+                            <span class="time-slot">11:30 AM</span>
+                            <span class="time-slot">2:00 PM</span>
+                            <span class="time-slot">2:30 PM</span>
+                            <span class="time-slot">3:00 PM</span>
+                            <span class="time-slot">3:30 PM</span>
+                            <span class="time-slot">4:00 PM</span>
+                            <span class="time-slot">4:30 PM</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Patient Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dob" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="dob" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Medical Concern</h5>
+                        <textarea class="form-control" id="medicalConcern" rows="3" placeholder="Briefly describe your medical concern..."></textarea>
+                    </div>
+                    
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg w-100" id="confirmBooking">Confirm Appointment</button>
+                </div>
+                
+                <div class="confirmation-section" id="confirmationSection">
+                    <i class="fas fa-check-circle text-success mb-3" style="font-size: 5rem;"></i>
+                    <h3 class="mb-3">Appointment Confirmed!</h3>
+                    <p class="lead mb-4">Your appointment with <span id="confirmedDoctor">Dr. Sarah Johnson</span> has been scheduled for <span id="confirmedDateTime">Monday, June 12 at 10:00 AM</span>.</p>
+                    <p class="text-muted mb-4">You will receive a confirmation email with all the details and a link to join your video consultation (if applicable).</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn btn-outline-primary" id="newAppointmentBtn">
+                            <i class="fas fa-calendar-plus me-2"></i> Book Another Appointment
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i> Return to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="bg-white p-4 rounded-3 shadow-sm mb-4">
+                    <h4 class="mb-3">Appointment Summary</h4>
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg" alt="Doctor" class="rounded-circle me-3" width="60" height="60">
+                        <div>
+                            <h6 class="mb-0" id="summaryDoctor">Not selected</h6>
+                            <small class="text-muted" id="summarySpecialty">Select a doctor</small>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <h6>Appointment Type</h6>
+                        <p class="text-muted mb-0" id="summaryType">Not selected</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6>Date & Time</h6>
+                        <p class="text-muted mb-0" id="summaryDateTime">Not selected</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6>Duration</h6>
+                        <p class="text-muted mb-0">15-30 minutes</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Consultation Fee</h6>
+                        <h5 class="mb-0 text-primary" id="summaryFee">$0</h5>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-3 shadow-sm">
+                    <h4 class="mb-3">Need Help?</h4>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fas fa-phone-alt text-primary mt-1 me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Call Us</h6>
+                            <p class="text-muted small mb-0">1-800-MEDICARE (1-800-633-4227)</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-comments text-primary mt-1 me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Live Chat</h6>
+                            <p class="text-muted small mb-0">Available 24/7 for immediate assistance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" class="mb-3" height="50">
+                    <p class="text-muted small">Your trusted online pharmacy for genuine medicines, health products, and doctor consultations.</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Prescription</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">OTC Medicines</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Wellness</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Personal Care</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Devices</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Deals</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Doctor Consultation</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Medicine Reminder</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Tools</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Symptom Checker</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">BMI Calculator</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Information</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Terms & Conditions</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Shipping Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Return Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-3">
+                    <h5 class="h6 mb-3">Newsletter</h5>
+                    <p class="small text-muted">Subscribe to get health tips and special offers</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control form-control-sm" placeholder="Your email">
+                        <button class="btn btn-primary btn-sm" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small mb-0">&copy; 2023 MediCare. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                        <img src="https://via.placeholder.com/40x25?text=Visa" alt="Visa" class="img-fluid">
+                        <img src="https://via.placeholder.com/40x25?text=MC" alt="Mastercard" class="img-fluid">
+                        <img src="https://via.placeholder.com/40x25?text=Amex" alt="Amex" class="img-fluid">
+                        <img src="https://via.placeholder.com/40x25?text=PayPal" alt="PayPal" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointmentDate').min = today;
+            
+            // Time slot selection
+            const timeSlots = document.querySelectorAll('.time-slot');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                    updateSummary();
+                });
+            });
+            
+            // Doctor selection
+            const doctorButtons = document.querySelectorAll('.select-doctor');
+            doctorButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const doctorCard = this.closest('.doctor-card');
+                    const doctorName = doctorCard.querySelector('h5').textContent;
+                    const doctorSpecialty = doctorCard.querySelector('p').textContent;
+                    
+                    document.querySelectorAll('.select-doctor').forEach(btn => {
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline-primary');
+                    });
+                    
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-primary');
+                    
+                    document.getElementById('summaryDoctor').textContent = doctorName;
+                    document.getElementById('summarySpecialty').textContent = doctorSpecialty;
+                    document.getElementById('confirmedDoctor').textContent = doctorName;
+                    document.getElementById('summaryFee').textContent = '$49';
+                    updateSummary();
+                });
+            });
+            
+            // Appointment type change
+            document.querySelectorAll('input[name="appointmentType"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    updateSummary();
+                });
+            });
+            
+            // Date change
+            document.getElementById('appointmentDate').addEventListener('change', function() {
+                updateSummary();
+            });
+            
+            // Form submission
+            document.getElementById('confirmBooking').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                const doctorSelected = document.querySelector('.select-doctor.btn-primary');
+                const timeSelected = document.querySelector('.time-slot.selected');
+                const formValid = document.getElementById('termsCheck').checked && 
+                                 document.getElementById('fullName').value && 
+                                 document.getElementById('email').value && 
+                                 document.getElementById('phone').value && 
+                                 document.getElementById('dob').value &&
+                                 doctorSelected &&
+                                 timeSelected;
+                
+                if (formValid) {
+                    // Show confirmation
+                    document.getElementById('appointmentForm').style.display = 'none';
+                    document.getElementById('confirmationSection').style.display = 'block';
+                    
+                    // Set confirmed date time
+                    const date = new Date(document.getElementById('appointmentDate').value);
+                    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                    const dateStr = date.toLocaleDateString('en-US', options);
+                    const timeStr = document.querySelector('.time-slot.selected').textContent;
+                    document.getElementById('confirmedDateTime').textContent = `${dateStr} at ${timeStr}`;
+                } else {
+                    alert('Please fill in all required fields and select a doctor and time slot.');
+                }
+            });
+            
+            // New appointment button
+            document.getElementById('newAppointmentBtn').addEventListener('click', function() {
+                document.getElementById('appointmentForm').style.display = 'block';
+                document.getElementById('confirmationSection').style.display = 'none';
+                window.scrollTo(0, 0);
+            });
+            
+            function updateSummary() {
+                const appointmentType = document.querySelector('input[name="appointmentType"]:checked');
+                const date = document.getElementById('appointmentDate').value;
+                const timeSlot = document.querySelector('.time-slot.selected');
+                
+                if (appointmentType) {
+                    document.getElementById('summaryType').textContent = 
+                        appointmentType.id === 'videoConsult' ? 'Video Consultation' : 'Clinic Visit';
+                }
+                
+                if (date && timeSlot) {
+                    const dateObj = new Date(date);
+                    const options = { weekday: 'short', month: 'short', day: 'numeric' };
+                    const dateStr = dateObj.toLocaleDateString('en-US', options);
+                    document.getElementById('summaryDateTime').textContent = 
+                        `${dateStr} at ${timeSlot.textContent}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

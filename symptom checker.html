@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom Checker - Health Assistant</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"], 
+        select, 
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .symptom-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .symptom-item select {
+            flex: 2;
+            margin-right: 10px;
+        }
+        
+        .symptom-item input {
+            flex: 1;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        #add-symptom {
+            background-color: #2ecc71;
+            margin-bottom: 20px;
+        }
+        
+        #add-symptom:hover {
+            background-color: #27ae60;
+        }
+        
+        #results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .condition {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .condition:last-child {
+            border-bottom: none;
+        }
+        
+        .condition-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .probability {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .advice {
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Symptom Checker</h1>
+        
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="text" id="age" placeholder="Enter your age">
+        </div>
+        
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender">
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        
+        <div id="symptoms-container">
+            <div class="form-group">
+                <label>Symptoms</label>
+                <div class="symptom-item">
+                    <select class="symptom-select">
+                        <option value="">Select a symptom</option>
+                        <option value="fever">Fever</option>
+                        <option value="headache">Headache</option>
+                        <option value="cough">Cough</option>
+                        <option value="fatigue">Fatigue</option>
+                        <option value="nausea">Nausea</option>
+                        <option value="dizziness">Dizziness</option>
+                        <option value="sore_throat">Sore throat</option>
+                        <option value="shortness_of_breath">Shortness of breath</option>
+                        <option value="chest_pain">Chest pain</option>
+                        <option value="abdominal_pain">Abdominal pain</option>
+                    </select>
+                    <input type="text" class="symptom-duration" placeholder="Duration (e.g., 2 days)">
+                </div>
+            </div>
+        </div>
+        
+        <button id="add-symptom">Add Another Symptom</button>
+        
+        <div class="form-group">
+            <label for="additional-info">Additional Information</label>
+            <textarea id="additional-info" rows="4" placeholder="Describe your symptoms in more detail..."></textarea>
+        </div>
+        
+        <button id="check-symptoms">Check Symptoms</button>
+        
+        <div id="results">
+            <h2>Possible Conditions</h2>
+            <div id="results-content">
+                <!-- Results will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('add-symptom').addEventListener('click', function() {
+            const container = document.getElementById('symptoms-container');
+            const newSymptom = document.createElement('div');
+            newSymptom.className = 'form-group';
+            newSymptom.innerHTML = `
+                <div class="symptom-item">
+                    <select class="symptom-select">
+                        <option value="">Select a symptom</option>
+                        <option value="fever">Fever</option>
+                        <option value="headache">Headache</option>
+                        <option value="cough">Cough</option>
+                        <option value="fatigue">Fatigue</option>
+                        <option value="nausea">Nausea</option>
+                        <option value="dizziness">Dizziness</option>
+                        <option value="sore_throat">Sore throat</option>
+                        <option value="shortness_of_breath">Shortness of breath</option>
+                        <option value="chest_pain">Chest pain</option>
+                        <option value="abdominal_pain">Abdominal pain</option>
+                    </select>
+                    <input type="text" class="symptom-duration" placeholder="Duration (e.g., 2 days)">
+                </div>
+            `;
+            container.appendChild(newSymptom);
+        });
+
+        document.getElementById('check-symptoms').addEventListener('click', function() {
+            // Get user inputs
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const additionalInfo = document.getElementById('additional-info').value;
+            
+            // Get all symptoms
+            const symptomSelects = document.querySelectorAll('.symptom-select');
+            const symptomDurations = document.querySelectorAll('.symptom-duration');
+            
+            const symptoms = [];
+            for (let i = 0; i < symptomSelects.length; i++) {
+                if (symptomSelects[i].value) {
+                    symptoms.push({
+                        name: symptomSelects[i].value,
+                        duration: symptomDurations[i].value
+                    });
+                }
+            }
+            
+            // Validate inputs
+            if (!age || !gender || symptoms.length === 0) {
+                alert('Please fill in all required fields (age, gender, and at least one symptom)');
+                return;
+            }
+            
+            // Process symptoms (in a real app, this would call an API)
+            const conditions = analyzeSymptoms(symptoms, age, gender, additionalInfo);
+            
+            // Display results
+            displayResults(conditions);
+        });
+        
+        function analyzeSymptoms(symptoms, age, gender, additionalInfo) {
+            // This is a simplified mock analysis
+            // In a real application, you would call a medical API or use a more sophisticated algorithm
+            
+            const conditions = [];
+            
+            // Check for common conditions based on symptoms
+            if (hasSymptom(symptoms, 'fever') && hasSymptom(symptoms, 'cough') && hasSymptom(symptoms, 'fatigue')) {
+                conditions.push({
+                    name: 'Common Cold',
+                    probability: '60%',
+                    advice: 'Get plenty of rest, drink fluids, and consider over-the-counter cold medicine.'
+                });
+                
+                if (hasSymptom(symptoms, 'shortness_of_breath')) {
+                    conditions.push({
+                        name: 'COVID-19',
+                        probability: '30%',
+                        advice: 'Consider getting tested for COVID-19 and self-isolate until you receive results.'
+                    });
+                }
+            }
+            
+            if (hasSymptom(symptoms, 'headache') && hasSymptom(symptoms, 'nausea') && hasSymptom(symptoms, 'dizziness')) {
+                conditions.push({
+                    name: 'Migraine',
+                    probability: '45%',
+                    advice: 'Rest in a quiet, dark room. Over-the-counter pain relievers may help.'
+                });
+            }
+            
+            if (hasSymptom(symptoms, 'chest_pain') && age > 40) {
+                conditions.push({
+                    name: 'Heart Disease (possible angina)',
+                    probability: '25%',
+                    advice: 'Seek immediate medical attention if pain is severe or persists.'
+                });
+            }
+            
+            if (hasSymptom(symptoms, 'abdominal_pain') && hasSymptom(symptoms, 'nausea')) {
+                conditions.push({
+                    name: 'Gastroenteritis',
+                    probability: '50%',
+                    advice: 'Stay hydrated with clear fluids and follow a bland diet until symptoms improve.'
+                });
+            }
+            
+            // If no specific conditions matched
+            if (conditions.length === 0) {
+                conditions.push({
+                    name: 'General Illness',
+                    probability: 'N/A',
+                    advice: 'Your symptoms don\'t match specific conditions in our database. Consult a healthcare provider if symptoms persist or worsen.'
+                });
+            }
+            
+            return conditions;
+        }
+        
+        function hasSymptom(symptoms, symptomName) {
+            return symptoms.some(s => s.name === symptomName);
+        }
+        
+        function displayResults(conditions) {
+            const resultsContent = document.getElementById('results-content');
+            resultsContent.innerHTML = '';
+            
+            conditions.forEach(condition => {
+                const conditionDiv = document.createElement('div');
+                conditionDiv.className = 'condition';
+                conditionDiv.innerHTML = `
+                    <div class="condition-name">${condition.name}</div>
+                    <div class="probability">Probability: ${condition.probability}</div>
+                    <div class="advice">${condition.advice}</div>
+                `;
+                resultsContent.appendChild(conditionDiv);
+            });
+            
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

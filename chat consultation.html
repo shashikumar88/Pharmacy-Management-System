@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAI - AI Medical Consultation</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #4fc3f7;
+            --danger: #e53935;
+            --success: #43a047;
+            --warning: #fb8c00;
+            --light: #f5f7fa;
+            --dark: #263238;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main {
+            padding: 2rem 0;
+        }
+        
+        /* Chat Interface */
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            height: 600px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-title img {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .close-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 18px;
+            max-width: 85%;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-message {
+            background-color: var(--accent);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .ai-message {
+            background-color: white;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .recommendation {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .doctor-recommendation {
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--success);
+        }
+        
+        .medicine-recommendation {
+            background-color: #fff3e0;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .health-tip {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .warning {
+            background-color: #ffebee;
+            border-left: 4px solid var(--danger);
+            font-weight: 600;
+        }
+        
+        .recommendation-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .doctor-card, .medicine-card {
+            background-color: white;
+            padding: 0.8rem;
+            margin: 0.8rem 0;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .doctor-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+        
+        .medicine-name {
+            font-weight: 600;
+            color: var(--warning);
+            margin-bottom: 0.3rem;
+        }
+        
+        .doctor-specialty, .medicine-purpose {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 0.3rem;
+        }
+        
+        .doctor-details, .medicine-details {
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+        
+        .medicine-warning {
+            font-size: 0.8rem;
+            color: var(--danger);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+            background-color: white;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: border 0.3s;
+        }
+        
+        .chat-input:focus {
+            border-color: var(--primary);
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0 1.2rem;
+            margin-left: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .chat-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: transform 0.3s;
+        }
+        
+        .chat-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 0.8rem 1rem;
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+        
+        .typing-dots {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .typing-dots span {
+            height: 8px;
+            width: 8px;
+            background-color: #7f8c8d;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+        }
+        
+        .feature-desc {
+            color: #666;
+        }
+        
+        /* Disclaimer */
+        .disclaimer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            font-size: 0.9rem;
+            color: #666;
+            border-left: 4px solid var(--warning);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 100%;
+                height: 80vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 12px 12px 0 0;
+            }
+            
+            .chat-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><i class="fas fa-heartbeat"></i> MediAI</h1>
+            <p class="tagline">AI-powered medical consultation with real-time diagnosis and treatment suggestions</p>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">Your Personal Health Assistant</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem; color: #555;">
+                MediAI combines advanced artificial intelligence with medical expertise to provide preliminary health assessments, 
+                medication recommendations, and doctor referrals.
+            </p>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title">AI Diagnosis</h3>
+                    <p class="feature-desc">
+                        Our neural network analyzes symptoms with 95% accuracy to provide reliable preliminary assessments.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <h3 class="feature-title">Medication Guide</h3>
+                    <p class="feature-desc">
+                        Get personalized medicine suggestions with dosage instructions and safety information.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3 class="feature-title">Doctor Matching</h3>
+                    <p class="feature-desc">
+                        We connect you with the most appropriate specialists based on your condition and location.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="disclaimer">
+                <p><strong>Important:</strong> MediAI provides preliminary health information only and does not replace professional medical advice. 
+                Always consult with a qualified healthcare provider for diagnosis and treatment. In emergencies, call your local emergency number immediately.</p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Chat Button -->
+    <div class="chat-btn" id="chatBtn">
+        <i class="fas fa-comment-medical" style="font-size: 1.5rem;"></i>
+    </div>
+    
+    <!-- Chat Container -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div class="chat-title">
+                <img src="https://cdn-icons-png.flaticon.com/512/2777/2777154.png" alt="MediAI Logo">
+                <h3>MediAI Assistant</h3>
+            </div>
+            <button class="close-btn" id="closeChat">&times;</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                Hello! I'm MediAI, your AI health assistant. I can help with:
+                <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                    <li>Symptom analysis</li>
+                    <li>Medicine information</li>
+                    <li>Doctor recommendations</li>
+                    <li>Health advice</li>
+                </ul>
+                How can I assist you today?
+            </div>
+        </div>
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            MediAI is analyzing your request...
+        </div>
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="userInput" placeholder="Describe your symptoms or health concern...">
+            <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const chatBtn = document.getElementById('chatBtn');
+        const chatContainer = document.getElementById('chatContainer');
+        const closeChat = document.getElementById('closeChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const typingIndicator = document.getElementById('typingIndicator');
+        
+        // API Configuration
+        const MEDICINE_AI_API = {
+            endpoint: 'https://api.medicine-ai.com/v1/analyze', // Replace with actual endpoint
+            apiKey: 'your_api_key_here', // Replace with your actual API key
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer your_api_key_here'
+            }
+        };
+        
+        // Toggle Chat Visibility
+        chatBtn.addEventListener('click', () => {
+            chatContainer.style.display = 'flex';
+        });
+        
+        closeChat.addEventListener('click', () => {
+            chatContainer.style.display = 'none';
+        });
+        
+        // Add Message to Chat
+        function addMessage(text, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Add Recommendation Card
+        function addRecommendation(type, title, content) {
+            const div = document.createElement('div');
+            div.classList.add('recommendation', type);
+            
+            let html = `<div class="recommendation-title">`;
+            
+            // Add icon based on type
+            switch(type) {
+                case 'doctor-recommendation':
+                    html += `<i class="fas fa-user-md"></i>`;
+                    break;
+                case 'medicine-recommendation':
+                    html += `<i class="fas fa-pills"></i>`;
+                    break;
+                case 'health-tip':
+                    html += `<i class="fas fa-heartbeat"></i>`;
+                    break;
+                case 'warning':
+                    html += `<i class="fas fa-exclamation-triangle"></i>`;
+                    break;
+            }
+            
+            html += `${title}</div>`;
+            html += content;
+            
+            div.innerHTML = html;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Simulate API Call (Replace with actual API call)
+        async function callMedicineAI(symptoms) {
+            // In a real implementation, this would be an actual API call
+            // For demonstration, we'll simulate the response
+            
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    // Mock response - replace with actual API response
+                    const mockResponse = generateMockResponse(symptoms);
+                    resolve(mockResponse);
+                }, 2000);
+            });
+        }
+        
+        // Generate Mock Response (Replace with actual API processing)
+        function generateMockResponse(symptoms) {
+            const lowerSymptoms = symptoms.toLowerCase();
+            
+            // This is where you would process the actual API response
+            // For demo purposes, we'll generate mock data based on keywords
+            
+            const response = {
+                diagnosis: "",
+                urgency: "low",
+                medicines: [],
+                doctors: [],
+                tips: []
+            };
+            
+            // Diagnosis Logic
+            if (lowerSymptoms.includes('chest pain') || lowerSymptoms.includes('heart')) {
+                response.diagnosis = "Chest pain can indicate various conditions from heartburn to serious cardiac issues. Given your description, I recommend evaluation by a healthcare professional to rule out cardiac causes.";
+                response.urgency = "high";
+                
+                response.doctors = [
+                    {
+                        name: "Dr. Sarah Johnson",
+                        specialty: "Cardiology",
+                        hospital: "City Heart Center",
+                        experience: "12 years",
+                        rating: "4.8/5",
+                        distance: "2.5 miles",
+                        availability: "Next appointment: Tomorrow"
+                    }
+                ];
+                
+                response.tips = [
+                    "Avoid strenuous activity until evaluated",
+                    "Monitor for worsening symptoms like shortness of breath",
+                    "Have someone stay with you if symptoms worsen"
+                ];
+            }
+            else if (lowerSymptoms.includes('headache')) {
+                if (lowerSymptoms.includes('severe') || lowerSymptoms.includes('worst')) {
+                    response.diagnosis = "Sudden severe headaches require prompt medical evaluation as they could indicate serious conditions like migraines, aneurysms, or other neurological issues.";
+                    response.urgency = "medium";
+                    
+                    response.doctors = [
+                        {
+                            name: "Dr. Michael Chen",
+                            specialty: "Neurology",
+                            hospital: "Metro Medical Center",
+                            experience: "10 years",
+                            rating: "4.7/5",
+                            distance: "3.2 miles",
+                            availability: "Next appointment: Today"
+                        }
+                    ];
+                } else {
+                    response.diagnosis = "Your symptoms suggest a tension-type headache, often related to stress, poor posture, or eye strain. These typically resolve with rest and OTC pain relievers.";
+                    response.urgency = "low";
+                    
+                    response.medicines = [
+                        {
+                            name: "Acetaminophen (Tylenol)",
+                            dosage: "500-1000mg every 4-6 hours",
+                            max: "4000mg per day",
+                            purpose: "Pain relief",
+                            warning: "Do not exceed maximum dose. Avoid with liver disease.",
+                            otc: true
+                        }
+                    ];
+                }
+                
+                response.tips = [
+                    "Apply a cold compress to forehead",
+                    "Rest in a quiet, dark room",
+                    "Practice relaxation techniques",
+                    "Stay hydrated"
+                ];
+            }
+            else if (lowerSymptoms.includes('fever') && lowerSymptoms.includes('cough')) {
+                response.diagnosis = "Your symptoms could indicate a respiratory infection. Most are viral and resolve in 7-10 days. If fever persists beyond 3 days or exceeds 103°F (39.4°C), seek medical care.";
+                response.urgency = "medium";
+                
+                response.medicines = [
+                    {
+                        name: "Acetaminophen (Tylenol)",
+                        dosage: "500-1000mg every 4-6 hours",
+                        max: "4000mg per day",
+                        purpose: "Fever reduction",
+                        warning: "Don't exceed maximum dose",
+                        otc: true
+                    },
+                    {
+                        name: "Ibuprofen (Advil)",
+                        dosage: "200-400mg every 6-8 hours",
+                        max: "1200mg per day",
+                        purpose: "Fever and pain relief",
+                        warning: "Take with food. Avoid with kidney issues.",
+                        otc: true
+                    }
+                ];
+                
+                response.tips = [
+                    "Get plenty of rest",
+                    "Stay hydrated with water and electrolyte solutions",
+                    "Use a humidifier to ease coughing",
+                    "Monitor temperature regularly"
+                ];
+            }
+            else {
+                response.diagnosis = "Based on your symptoms, I recommend monitoring and providing more details about duration, severity, and any accompanying symptoms for better assessment.";
+                response.tips = [
+                    "Stay hydrated",
+                    "Get adequate rest",
+                    "Monitor symptoms for changes",
+                    "Seek medical attention if symptoms worsen"
+                ];
+            }
+            
+            return response;
+        }
+        
+        // Handle User Input
+        async function handleUserInput() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            addMessage(message, true);
+            userInput.value = '';
+            
+            // Show typing indicator
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            try {
+                // Call Medicine.AI API
+                const aiResponse = await callMedicineAI(message);
+                
+                // Hide typing indicator
+                typingIndicator.style.display = 'none';
+                
+                // Add AI diagnosis message
+                addMessage(aiResponse.diagnosis, false);
+                
+                // Add urgency warning if needed
+                if (aiResponse.urgency === "high") {
+                    addRecommendation(
+                        'warning',
+                        'Urgent Medical Attention Needed',
+                        'Your symptoms may indicate a serious condition requiring immediate evaluation. Please seek emergency care or contact a healthcare provider immediately.'
+                    );
+                } else if (aiResponse.urgency === "medium") {
+                    addRecommendation(
+                        'warning',
+                        'Medical Evaluation Recommended',
+                        'Your symptoms may require professional evaluation. Please consider consulting a healthcare provider soon.'
+                    );
+                }
+                
+                // Add medicine recommendations if available
+                if (aiResponse.medicines.length > 0) {
+                    let medicineContent = '<p>These over-the-counter options may help:</p>';
+                    
+                    aiResponse.medicines.forEach(med => {
+                        medicineContent += `
+                            <div class="medicine-card">
+                                <div class="medicine-name">${med.name}</div>
+                                <div class="medicine-purpose">${med.purpose}</div>
+                                <div class="medicine-details">
+                                    <span><strong>Dosage:</strong> ${med.dosage}</span>
+                                    <span><strong>Max:</strong> ${med.max}</span>
+                                </div>
+                                <div class="medicine-warning">⚠️ ${med.warning}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    addRecommendation(
+                        'medicine-recommendation',
+                        'Medication Suggestions',
+                        medicineContent
+                    );
+                }
+                
+                // Add doctor recommendations if available
+                if (aiResponse.doctors.length > 0) {
+                    let doctorContent = '<p>Based on your symptoms, consider consulting:</p>';
+                    
+                    aiResponse.doctors.forEach(doc => {
+                        doctorContent += `
+                            <div class="doctor-card">
+                                <div class="doctor-name">${doc.name}</div>
+                                <div class="doctor-specialty">${doc.specialty}</div>
+                                <div class="doctor-details">
+                                    <span>${doc.hospital}</span>
+                                    <span>${doc.rating}</span>
+                                </div>
+                                <div class="doctor-details">
+                                    <span>${doc.distance}</span>
+                                    <span>${doc.availability}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    addRecommendation(
+                        'doctor-recommendation',
+                        'Doctor Recommendations',
+                        doctorContent
+                    );
+                }
+                
+                // Add health tips if available
+                if (aiResponse.tips.length > 0) {
+                    let tipsContent = '<ul>';
+                    aiResponse.tips.forEach(tip => {
+                        tipsContent += `<li>${tip}</li>`;
+                    });
+                    tipsContent += '</ul>';
+                    
+                    addRecommendation(
+                        'health-tip',
+                        'Health Tips',
+                        tipsContent
+                    );
+                }
+                
+            } catch (error) {
+                // Hide typing indicator
+                typingIndicator.style.display = 'none';
+                
+                // Show error message
+                addMessage("Sorry, I encountered an error processing your request. Please try again later.", false);
+                console.error("Medicine.AI API error:", error);
+            }
+        }
+        
+        // Event Listeners
+        sendBtn.addEventListener('click', handleUserInput);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleUserInput();
+        });
+        
+        // Initialize chat
+        window.addEventListener('DOMContentLoaded', () => {
+            chatContainer.style.display = 'none';
+        });
+        
+        // For demo purposes - this would be replaced with actual API calls
+        console.log("To connect to a real Medicine.AI API:");
+        console.log("1. Replace the callMedicineAI() function with actual API calls");
+        console.log("2. Update the generateMockResponse() with actual API response processing");
+        console.log("3. Add your API key to the MEDICINE_AI_API configuration");
+    </script>
+</body>
+</html>

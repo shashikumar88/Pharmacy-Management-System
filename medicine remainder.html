@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Medicine Reminder</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+        }
+        
+        .reminder-btn {
+            position: relative;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .reminder-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        .reminder-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 0.7rem;
+            background-color: #f72585;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-bottom: none;
+        }
+        
+        .medicine-card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            overflow: hidden;
+            background-color: white;
+        }
+        
+        .medicine-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .medicine-header {
+            background-color: rgba(67, 97, 238, 0.1);
+            padding: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .medicine-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .time-badge {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .time-badge i {
+            margin-right: 5px;
+            font-size: 0.7rem;
+        }
+        
+        .upcoming-alert {
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            background-color: white;
+        }
+        
+        .progress-thin {
+            height: 6px;
+            border-radius: 3px;
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+        }
+        
+        .nav-pills .nav-link {
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+        
+        .floating-action-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(67, 97, 238, 0.4);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-action-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.5);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .medicine-type-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
+        .snooze-options {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            padding: 5px 0;
+        }
+        
+        .snooze-options a {
+            display: block;
+            padding: 5px 15px;
+            color: var(--dark-color);
+            text-decoration: none;
+        }
+        
+        .snooze-options a:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        
+        .notification-bell {
+            position: relative;
+            animation: ring 4s ease-in-out infinite;
+            transform-origin: top center;
+        }
+        
+        @keyframes ring {
+            0% { transform: rotate(0); }
+            5% { transform: rotate(15deg); }
+            10% { transform: rotate(-15deg); }
+            15% { transform: rotate(15deg); }
+            20% { transform: rotate(-15deg); }
+            25% { transform: rotate(0); }
+            100% { transform: rotate(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Floating Action Button -->
+<div class="floating-action-btn animate__animated animate__bounceIn" id="floatingReminderBtn">
+    <i class="fas fa-bell notification-bell"></i>
+</div>
+
+<!-- Medicine Reminder Button (alternative to floating button) -->
+<button type="button" class="btn reminder-btn animate__animated animate__fadeIn position-relative" data-bs-toggle="modal" data-bs-target="#reminderModal" id="mainReminderBtn">
+    <i class="fas fa-pills me-2"></i>Medicine Reminder
+    <span class="reminder-badge" id="pendingReminders">0</span>
+</button>
+
+<!-- Reminder Modal -->
+<div class="modal fade" id="reminderModal" tabindex="-1" aria-labelledby="reminderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reminderModalLabel">
+                    <i class="fas fa-bell me-2"></i>Smart Medicine Reminder
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-pills mb-3" id="reminderTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="today-tab" data-bs-toggle="pill" data-bs-target="#today" type="button" role="tab">
+                            <i class="fas fa-calendar-day me-1"></i>Today
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="medicines-tab" data-bs-toggle="pill" data-bs-target="#medicines" type="button" role="tab">
+                            <i class="fas fa-pills me-1"></i>My Medicines
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="history-tab" data-bs-toggle="pill" data-bs-target="#history" type="button" role="tab">
+                            <i class="fas fa-history me-1"></i>History
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="reminderTabContent">
+                    <!-- Today Tab -->
+                    <div class="tab-pane fade show active" id="today" role="tabpanel">
+                        <h5 class="mb-3"><i class="fas fa-clock me-2"></i>Upcoming Reminders</h5>
+                        <div id="upcomingReminders">
+                            <div class="alert alert-light">
+                                <i class="fas fa-info-circle me-2"></i>No upcoming reminders for today.
+                            </div>
+                        </div>
+                        
+                        <h5 class="mb-3 mt-4"><i class="fas fa-chart-pie me-2"></i>Today's Progress</h5>
+                        <div class="card medicine-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">Medication Adherence</h6>
+                                    <span class="badge bg-primary">75%</span>
+                                </div>
+                                <div class="progress progress-thin mb-2">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                                </div>
+                                <small class="text-muted">3 of 4 doses taken today</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Medicines Tab -->
+                    <div class="tab-pane fade" id="medicines" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0"><i class="fas fa-capsules me-2"></i>My Medications</h5>
+                            <button class="btn btn-sm btn-primary" id="addReminderBtn">
+                                <i class="fas fa-plus me-1"></i>Add New
+                            </button>
+                        </div>
+                        
+                        <div id="activeReminders">
+                            <div class="alert alert-light">
+                                <i class="fas fa-info-circle me-2"></i>No medications added yet.
+                            </div>
+                        </div>
+                        
+                        <div id="addReminderForm" style="display: none;">
+                            <h5 class="mb-3"><i class="fas fa-plus-circle me-2"></i>Add New Medication</h5>
+                            <form id="reminderForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="medicineName" class="form-label">Medicine Name</label>
+                                        <input type="text" class="form-control" id="medicineName" placeholder="e.g. Amoxicillin" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="medicineType" class="form-label">Medicine Type</label>
+                                        <select class="form-select" id="medicineType">
+                                            <option value="tablet">Tablet</option>
+                                            <option value="capsule">Capsule</option>
+                                            <option value="liquid">Liquid</option>
+                                            <option value="injection">Injection</option>
+                                            <option value="inhaler">Inhaler</option>
+                                            <option value="drops">Drops</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-4 mb-3 mb-md-0">
+                                        <label for="dosage" class="form-label">Dosage</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="dosage" min="0.1" step="0.1" value="1" required>
+                                            <span class="input-group-text" id="dosageUnit">tablet(s)</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3 mb-md-0">
+                                        <label for="frequency" class="form-label">Frequency</label>
+                                        <select class="form-select" id="frequency" required>
+                                            <option value="once">Once daily</option>
+                                            <option value="twice" selected>Twice daily</option>
+                                            <option value="thrice">Three times daily</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option value="custom">Custom</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4" id="customFrequencyContainer" style="display: none;">
+                                        <label for="customFrequency" class="form-label">Times per day</label>
+                                        <input type="number" class="form-control" id="customFrequency" min="1" max="10" value="2">
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3" id="timesContainer">
+                                    <!-- Time inputs will be added here -->
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="startDate" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="startDate" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="endDate" class="form-label">End Date (optional)</label>
+                                        <input type="date" class="form-control" id="endDate">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="notes" class="form-label">Additional Notes</label>
+                                    <textarea class="form-control" id="notes" rows="2" placeholder="Special instructions, side effects, etc."></textarea>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" id="cancelReminderBtn">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i>Save Medication
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- History Tab -->
+                    <div class="tab-pane fade" id="history" role="tabpanel">
+                        <h5 class="mb-3"><i class="fas fa-chart-line me-2"></i>Adherence History</h5>
+                        <div class="card medicine-card">
+                            <div class="card-body">
+                                <canvas id="adherenceChart" height="200"></canvas>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mb-3 mt-4"><i class="fas fa-list-check me-2"></i>Recent Activity</h5>
+                        <div class="list-group" id="historyList">
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="fas fa-check-circle text-success me-2"></i>Took Metformin at 08:00 AM</span>
+                                    <small class="text-muted">Today</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="fas fa-bell text-warning me-2"></i>Missed Lisinopril at 08:00 PM</span>
+                                    <small class="text-muted">Yesterday</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="fas fa-check-circle text-success me-2"></i>Took all medications</span>
+                                    <small class="text-muted">2 days ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Initialize the floating button
+    document.getElementById('floatingReminderBtn').addEventListener('click', function() {
+        var modal = new bootstrap.Modal(document.getElementById('reminderModal'));
+        modal.show();
+    });
+
+    // Sample data for demonstration
+    let reminders = [
+        {
+            id: 1,
+            name: "Metformin",
+            type: "tablet",
+            dosage: "1",
+            frequency: "twice",
+            times: ["08:00", "20:00"],
+            startDate: "2023-06-01",
+            endDate: null,
+            notes: "Take with food",
+            active: true
+        },
+        {
+            id: 2,
+            name: "Lisinopril",
+            type: "tablet",
+            dosage: "1",
+            frequency: "once",
+            times: ["08:00"],
+            startDate: "2023-05-15",
+            endDate: null,
+            notes: "",
+            active: true
+        }
+    ];
+
+    // Initialize the reminder interface
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set today's date as default for start date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('startDate').value = today;
+        
+        // Update the reminder display
+        updateReminderDisplay();
+        
+        // Initialize the adherence chart
+        initAdherenceChart();
+        
+        // Toggle add reminder form
+        document.getElementById('addReminderBtn').addEventListener('click', function() {
+            document.getElementById('addReminderForm').style.display = 'block';
+            document.getElementById('activeReminders').style.display = 'none';
+            this.style.display = 'none';
+        });
+        
+        document.getElementById('cancelReminderBtn').addEventListener('click', function() {
+            document.getElementById('addReminderForm').style.display = 'none';
+            document.getElementById('activeReminders').style.display = 'block';
+            document.getElementById('addReminderBtn').style.display = 'block';
+            document.getElementById('reminderForm').reset();
+        });
+        
+        // Change dosage unit based on medicine type
+        document.getElementById('medicineType').addEventListener('change', function() {
+            const type = this.value;
+            const unitMap = {
+                'tablet': 'tablet(s)',
+                'capsule': 'capsule(s)',
+                'liquid': 'ml',
+                'injection': 'dose(s)',
+                'inhaler': 'puff(s)',
+                'drops': 'drop(s)',
+                'other': 'unit(s)'
+            };
+            document.getElementById('dosageUnit').textContent = unitMap[type];
+        });
+        
+        // Handle form submission
+        document.getElementById('reminderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Create new reminder object
+            const newReminder = {
+                id: Date.now(),
+                name: document.getElementById('medicineName').value,
+                type: document.getElementById('medicineType').value,
+                dosage: document.getElementById('dosage').value,
+                frequency: document.getElementById('frequency').value,
+                times: ["08:00"], // Simplified for this example
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value || null,
+                notes: document.getElementById('notes').value,
+                active: true
+            };
+            
+            // Add to reminders array
+            reminders.push(newReminder);
+            
+            // Reset form and show reminders
+            this.reset();
+            document.getElementById('addReminderForm').style.display = 'none';
+            document.getElementById('activeReminders').style.display = 'block';
+            document.getElementById('addReminderBtn').style.display = 'block';
+            
+            // Update display
+            updateReminderDisplay();
+        });
+    });
+    
+    function updateReminderDisplay() {
+        const activeContainer = document.getElementById('activeReminders');
+        const upcomingContainer = document.getElementById('upcomingReminders');
+        
+        // Update badge count
+        document.getElementById('pendingReminders').textContent = reminders.filter(r => r.active).length;
+        
+        // Display active reminders
+        if (reminders.length === 0) {
+            activeContainer.innerHTML = '<div class="alert alert-light"><i class="fas fa-info-circle me-2"></i>No medications added yet.</div>';
+        } else {
+            activeContainer.innerHTML = '';
+            reminders.forEach(reminder => {
+                const card = createReminderCard(reminder);
+                activeContainer.appendChild(card);
+            });
+        }
+        
+        // Display today's upcoming reminders (simplified for this example)
+        if (reminders.length > 0) {
+            upcomingContainer.innerHTML = `
+                <div class="alert upcoming-alert mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Metformin</strong> - 1 tablet
+                            <div class="mt-2">
+                                <span class="time-badge"><i class="fas fa-clock"></i>08:00 AM</span>
+                                <span class="time-badge"><i class="fas fa-clock"></i>08:00 PM</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-check me-1"></i>Mark Taken
+                        </button>
+                    </div>
+                </div>
+                <div class="alert upcoming-alert">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Lisinopril</strong> - 1 tablet
+                            <div class="mt-2">
+                                <span class="time-badge"><i class="fas fa-clock"></i>08:00 AM</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-check me-1"></i>Mark Taken
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    function createReminderCard(reminder) {
+        const card = document.createElement('div');
+        card.className = 'card medicine-card';
+        
+        const typeIcon = getTypeIcon(reminder.type);
+        const timesHtml = reminder.times.map(time => `
+            <span class="time-badge">
+                <i class="fas fa-clock"></i>${formatTime(time)}
+            </span>
+        `).join('');
+        
+        card.innerHTML = `
+            <div class="medicine-header d-flex align-items-center">
+                <div class="medicine-icon">
+                    <i class="${typeIcon}"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="mb-0">${reminder.name}</h5>
+                    <small class="text-muted">${reminder.dosage} ${getDosageUnit(reminder.type)} • ${reminder.frequency}</small>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" ${reminder.active ? 'checked' : ''}>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    ${timesHtml}
+                </div>
+                ${reminder.notes ? `<p class="mb-3">${reminder.notes}</p>` : ''}
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        <i class="fas fa-calendar me-1"></i>
+                        ${formatDate(reminder.startDate)} 
+                        ${reminder.endDate ? `to ${formatDate(reminder.endDate)}` : 'onwards'}
+                    </small>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash me-2"></i>Snooze</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+    
+    function initAdherenceChart() {
+        const ctx = document.getElementById('adherenceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Adherence Rate',
+                    data: [80, 90, 75, 100, 85, 60, 95],
+                    borderColor: '#4361ee',
+                    backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Helper functions
+    function getTypeIcon(type) {
+        const icons = {
+            'tablet': 'fas fa-tablet-alt',
+            'capsule': 'fas fa-capsules',
+            'liquid': 'fas fa-tint',
+            'injection': 'fas fa-syringe',
+            'inhaler': 'fas fa-lungs',
+            'drops': 'fas fa-eye-dropper',
+            'other': 'fas fa-pills'
+        };
+        return icons[type] || 'fas fa-pills';
+    }
+    
+    function getDosageUnit(type) {
+        const units = {
+            'tablet': 'tablet(s)',
+            'capsule': 'capsule(s)',
+            'liquid': 'ml',
+            'injection': 'dose(s)',
+            'inhaler': 'puff(s)',
+            'drops': 'drop(s)',
+            'other': 'unit(s)'
+        };
+        return units[type] || 'unit(s)';
+    }
+    
+    function formatTime(timeStr) {
+        const [hours, minutes] = timeStr.split(':');
+        const hour = parseInt(hours);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        return `${displayHour}:${minutes} ${ampm}`;
+    }
+    
+    function formatDate(dateStr) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateStr).toLocaleDateString(undefined, options);
+    }
+</script>
+</body>
+</html>

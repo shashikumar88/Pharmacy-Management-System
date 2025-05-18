@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Prescription | MediCare</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --accent-color: #198754;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --prescription-blue: #0077b6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .prescription-header {
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: white;
+            padding: 3rem 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 3rem;
+        }
+        
+        .upload-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--prescription-blue);
+            background-color: rgba(0, 119, 182, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--prescription-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .file-preview {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            max-height: 300px;
+        }
+        
+        .prescription-steps {
+            counter-reset: step-counter;
+        }
+        
+        .step-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 2rem;
+        }
+        
+        .step-item:before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            background-color: var(--prescription-blue);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        
+        .benefit-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .benefit-icon {
+            font-size: 2rem;
+            color: var(--prescription-blue);
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .prescription-header {
+                padding: 2rem 0;
+            }
+            
+            .upload-area {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="prescription-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold"><i class="fas fa-file-prescription me-3"></i>Upload Prescription</h1>
+            <p class="lead">Get your medications delivered quickly and conveniently</p>
+        </div>
+    </header>
+
+    <div class="container mb-5">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <div class="upload-container">
+                    <h2 class="h4 fw-bold mb-4"><i class="fas fa-cloud-upload-alt me-2"></i>Upload Your Prescription</h2>
+                    
+                    <!-- Upload Area -->
+                    <div id="uploadArea" class="upload-area">
+                        <i class="fas fa-file-medical upload-icon"></i>
+                        <h4>Drag & Drop Your Prescription Here</h4>
+                        <p class="text-muted">or click to browse files</p>
+                        <small class="text-muted">Supported formats: JPG, PNG, PDF (Max 5MB)</small>
+                        <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                    </div>
+                    
+                    <!-- File Preview -->
+                    <div id="filePreview" class="file-preview" style="display: none;">
+                        <img id="previewImage" src="#" alt="Preview" class="img-fluid rounded">
+                        <div id="pdfPreview" class="bg-light p-4 rounded text-center" style="display: none;">
+                            <i class="fas fa-file-pdf text-danger" style="font-size: 3rem;"></i>
+                            <p class="mt-2 mb-0" id="pdfFileName"></p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span id="fileName" class="fw-bold"></span>
+                            <button id="removeFile" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-times me-1"></i>Remove
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Patient Information -->
+                    <h4 class="mt-4 mb-3"><i class="fas fa-user me-2"></i>Patient Information</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" placeholder="As it appears on prescription">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="dob">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="For order updates">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="For order confirmation">
+                        </div>
+                    </div>
+                    
+                    <!-- Delivery Options -->
+                    <h4 class="mt-4 mb-3"><i class="fas fa-truck me-2"></i>Delivery Options</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="deliveryAddress" class="form-label">Delivery Address</label>
+                            <textarea class="form-control" id="deliveryAddress" rows="3" placeholder="Where should we deliver your medications?"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="deliveryTime" class="form-label">Preferred Delivery Time</label>
+                            <select class="form-select" id="deliveryTime">
+                                <option selected>Any time</option>
+                                <option>Morning (9am-12pm)</option>
+                                <option>Afternoon (12pm-5pm)</option>
+                                <option>Evening (5pm-9pm)</option>
+                            </select>
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="checkbox" id="expressDelivery">
+                                <label class="form-check-label" for="expressDelivery">
+                                    Express Delivery (Same Day) - $5.99
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Notes -->
+                    <div class="mt-4">
+                        <label for="additionalNotes" class="form-label">Additional Notes</label>
+                        <textarea class="form-control" id="additionalNotes" rows="3" placeholder="Any special instructions for your order..."></textarea>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button id="submitBtn" class="btn btn-primary btn-lg" disabled>
+                            <i class="fas fa-paper-plane me-2"></i>Submit Prescription
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Processing Info -->
+                <div class="upload-container mt-4">
+                    <h4 class="h5 fw-bold mb-3"><i class="fas fa-info-circle me-2"></i>What Happens Next?</h4>
+                    <div class="prescription-steps">
+                        <div class="step-item">
+                            <h5>Prescription Verification</h5>
+                            <p class="text-muted">Our licensed pharmacists will review your prescription within 1-2 hours during business hours (9am-9pm).</p>
+                        </div>
+                        <div class="step-item">
+                            <h5>Price Confirmation</h5>
+                            <p class="text-muted">We'll contact you with the total cost and any insurance coverage information.</p>
+                        </div>
+                        <div class="step-item">
+                            <h5>Medication Preparation</h5>
+                            <p class="text-muted">Once approved, we'll prepare your medications with clear usage instructions.</p>
+                        </div>
+                        <div class="step-item">
+                            <h5>Delivery Tracking</h5>
+                            <p class="text-muted">You'll receive tracking information when your order ships or is out for delivery.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="upload-container">
+                    <h4 class="h5 fw-bold mb-3"><i class="fas fa-check-circle me-2 text-success"></i>Prescription Requirements</h4>
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-check text-success me-3"></i>
+                            Clear photo or scan of prescription
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-check text-success me-3"></i>
+                            Doctor's name and contact visible
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-check text-success me-3"></i>
+                            Patient name matches ID
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-check text-success me-3"></i>
+                            Issue date within last 6 months
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-check text-success me-3"></i>
+                            All medications clearly visible
+                        </li>
+                    </ul>
+                    <div class="text-center">
+                        <button class="btn btn-outline-primary w-100">
+                            <i class="fas fa-question-circle me-2"></i>Prescription Help
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Benefits -->
+                <div class="upload-container mt-4">
+                    <h4 class="h5 fw-bold mb-3"><i class="fas fa-star me-2 text-warning"></i>Benefits of Our Service</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-12">
+                            <div class="benefit-card">
+                                <i class="fas fa-clock benefit-icon"></i>
+                                <h5>Save Time</h5>
+                                <p class="text-muted small">No need to visit a pharmacy - get medications delivered to your door.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-12">
+                            <div class="benefit-card">
+                                <i class="fas fa-shield-alt benefit-icon"></i>
+                                <h5>Verified Pharmacists</h5>
+                                <p class="text-muted small">All prescriptions are reviewed by licensed professionals.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-12">
+                            <div class="benefit-card">
+                                <i class="fas fa-lock benefit-icon"></i>
+                                <h5>Secure Processing</h5>
+                                <p class="text-muted small">Your medical information is protected with encryption.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Support -->
+                <div class="upload-container mt-4">
+                    <h4 class="h5 fw-bold mb-3"><i class="fas fa-headset me-2"></i>Need Help?</h4>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-phone-alt me-3 text-primary"></i>
+                        <div>
+                            <h6 class="mb-0">Phone Support</h6>
+                            <small class="text-muted">1-800-PRESCRIBE</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-comment me-3 text-primary"></i>
+                        <div>
+                            <h6 class="mb-0">Live Chat</h6>
+                            <small class="text-muted">Available 24/7</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-envelope me-3 text-primary"></i>
+                        <div>
+                            <h6 class="mb-0">Email Us</h6>
+                            <small class="text-muted">prescriptions@medicare.com</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h5><i class="fas fa-file-prescription me-2"></i>MediCare Prescription Services</h5>
+                    <p class="text-muted">Licensed pharmacy serving patients nationwide since 2010.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <a href="services.html"><div class="col-md-3 col-6 mb-4 mb-md-0">
+                    <h5>Services</h5></a>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted">Prescription Refills</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Medication Delivery</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Pharmacist Consult</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Insurance Billing</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-6">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Terms of Service</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">HIPAA Compliance</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Licenses</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted small">
+                <p class="mb-0">© 2023 MediCare Pharmacy Services. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript for file upload -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const filePreview = document.getElementById('filePreview');
+            const previewImage = document.getElementById('previewImage');
+            const pdfPreview = document.getElementById('pdfPreview');
+            const pdfFileName = document.getElementById('pdfFileName');
+            const fileName = document.getElementById('fileName');
+            const removeFile = document.getElementById('removeFile');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Handle drag and drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#0077b6';
+                uploadArea.style.backgroundColor = 'rgba(0, 119, 182, 0.1)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = '#dee2e6';
+                uploadArea.style.backgroundColor = 'transparent';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#dee2e6';
+                uploadArea.style.backgroundColor = 'transparent';
+                
+                if (e.dataTransfer.files.length) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Handle click to browse
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    handleFile(fileInput.files[0]);
+                }
+            });
+            
+            // Handle file removal
+            removeFile.addEventListener('click', (e) => {
+                e.preventDefault();
+                filePreview.style.display = 'none';
+                fileInput.value = '';
+                submitBtn.disabled = true;
+            });
+            
+            // File handling function
+            function handleFile(file) {
+                const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                
+                if (!validTypes.includes(file.type)) {
+                    alert('Please upload a JPG, PNG, or PDF file.');
+                    return;
+                }
+                
+                if (file.size > maxSize) {
+                    alert('File size exceeds 5MB limit.');
+                    return;
+                }
+                
+                fileName.textContent = file.name;
+                
+                if (file.type === 'application/pdf') {
+                    previewImage.style.display = 'none';
+                    pdfPreview.style.display = 'block';
+                    pdfFileName.textContent = file.name;
+                } else {
+                    pdfPreview.style.display = 'none';
+                    previewImage.style.display = 'block';
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+                
+                filePreview.style.display = 'block';
+                submitBtn.disabled = false;
+            }
+            
+            // Enable submit button when form is filled
+            const formInputs = document.querySelectorAll('input, textarea, select');
+            formInputs.forEach(input => {
+                input.addEventListener('input', checkForm);
+            });
+            
+            function checkForm() {
+                let allFilled = true;
+                formInputs.forEach(input => {
+                    if (input.required && !input.value) {
+                        allFilled = false;
+                    }
+                });
+                
+                if (allFilled && fileInput.files.length) {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = true;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

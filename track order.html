@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Track Your Order</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --accent-color: #198754;
+            --tracking-blue: #0dcaf0;
+        }
+        
+        /* Track Order Button Styles */
+        .track-btn {
+            background-color: var(--tracking-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .track-btn:hover {
+            background-color: #0aa2c0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(13, 202, 240, 0.3);
+            color: white;
+        }
+        
+        .track-card {
+            background: linear-gradient(135deg, rgba(13, 202, 240, 0.1), rgba(13, 110, 253, 0.1));
+            border-radius: 12px;
+            border-left: 4px solid var(--tracking-blue);
+            transition: all 0.3s ease;
+        }
+        
+        .track-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .tracking-icon {
+            color: var(--tracking-blue);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Status Indicator */
+        .status-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .status-preparing { background-color: #ffc107; }
+        .status-shipped { background-color: #fd7e14; }
+        .status-delivered { background-color: var(--accent-color); }
+        
+        /* Floating Track Button */
+        .floating-track-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--tracking-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(13, 202, 240, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-track-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Example 1: Basic Track Order Button -->
+    <section class="container my-5 text-center">
+        <h3 class="mb-4">Where's My Order?</h3>
+        <button class="track-btn">
+            <i class="fas fa-truck me-2"></i> Track Your Package
+        </button>
+    </section>
+    
+    <!-- Example 2: Tracking Card with Button -->
+    <section class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="track-card p-4 p-md-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <i class="fas fa-map-marked-alt tracking-icon"></i>
+                            <h3>Real-Time Order Tracking</h3>
+                            <p class="mb-md-0">Follow your medication delivery from our pharmacy to your doorstep</p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                            <button class="track-btn px-4 py-3 w-100 w-md-auto">
+                                <i class="fas fa-search-location me-2"></i> Track Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 3: Tracking Form -->
+    <section class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0"><i class="fas fa-truck me-2"></i>Track Your Order</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Order Number</label>
+                                <input type="text" class="form-control" placeholder="e.g. MC-123456" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email or Phone</label>
+                                <input type="text" class="form-control" placeholder="Used for order" required>
+                            </div>
+                            <button type="submit" class="track-btn w-100 py-3">
+                                <i class="fas fa-map-marker-alt me-2"></i> Find My Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 4: Order Status Button -->
+    <section class="container my-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center p-4 border rounded">
+            <div class="mb-3 mb-md-0">
+                <h5 class="mb-1">Order #MC-789456</h5>
+                <p class="mb-0">
+                    <span class="status-indicator status-shipped"></span>
+                    Shipped - Expected delivery: Tomorrow
+                </p>
+            </div>
+            <button class="track-btn px-4 py-2">
+                <i class="fas fa-truck-fast me-2"></i> View Details
+            </button>
+        </div>
+    </section>
+    
+    <!-- Example 5: Floating Track Button (Mobile) -->
+    <a href="track.html" class="floating-track-btn d-lg-none">
+        <i class="fas fa-truck"></i>
+    </a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Example tracking form handler
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const orderNumber = this.querySelector('input[type="text"]').value;
+            alert(`Tracking order #${orderNumber}...`);
+            // In real implementation, this would check order status
+            // window.location.href = `tracking-results.html?order=${orderNumber}`;
+        });
+        
+        // Example order status button handler
+        document.querySelectorAll('.track-btn').forEach(button => {
+            if(!button.type || button.type !== 'submit') {
+                button.addEventListener('click', function() {
+                    // In real implementation, this would show order details
+                    alert('Showing order tracking details...');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

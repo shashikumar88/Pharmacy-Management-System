@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Doctor Consultation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --accent-color: #198754;
+            --doctor-teal: #20c997;
+        }
+        
+        /* Consultation Button Styles */
+        .consult-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .consult-btn:hover {
+            background-color: #157347;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+            color: white;
+        }
+        
+        .consult-card {
+            background: linear-gradient(135deg, rgba(25, 135, 84, 0.1), rgba(32, 201, 151, 0.1));
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        
+        .consult-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .doctor-icon {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Emergency Button */
+        .emergency-btn {
+            background-color: #dc3545;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Floating Consult Button */
+        .floating-consult-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-consult-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Example 1: Basic Consultation Button -->
+    <section class="container my-5 text-center">
+        <h3 class="mb-4">Need Medical Advice?</h3>
+        <button class="consult-btn">
+            <i class="fas fa-user-md me-2"></i> Consult a Doctor Now
+        </button>
+    </section>
+    
+    <!-- Example 2: Consultation Card with Button -->
+    <section class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="consult-card p-4 p-md-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <i class="fas fa-stethoscope doctor-icon"></i>
+                            <h3>Online Doctor Consultation</h3>
+                            <p class="mb-md-0">Connect with licensed physicians 24/7 for medical advice, prescriptions, and health concerns.</p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                            <button class="consult-btn px-4 py-3 w-100 w-md-auto">
+                                <i class="fas fa-video me-2"></i> Start Visit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 3: Specialist Buttons -->
+    <section class="container my-5">
+        <h4 class="text-center mb-4">Speak to a Specialist</h4>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <button class="consult-btn w-100 py-3" style="background-color: var(--doctor-teal);">
+                    <i class="fas fa-heartbeat me-2"></i> Cardiologist
+                </button>
+            </div>
+            <div class="col-md-4">
+                <button class="consult-btn w-100 py-3" style="background-color: #6f42c1;">
+                    <i class="fas fa-brain me-2"></i> Neurologist
+                </button>
+            </div>
+            <div class="col-md-4">
+                <button class="consult-btn w-100 py-3" style="background-color: #0dcaf0;">
+                    <i class="fas fa-lungs me-2"></i> Pulmonologist
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 4: Emergency Button -->
+    <section class="container my-5">
+        <div class="alert alert-danger rounded">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="mb-3 mb-md-0">
+                    <h4><i class="fas fa-exclamation-triangle me-2"></i> Medical Emergency?</h4>
+                    <p class="mb-0">Immediate assistance for urgent health concerns</p>
+                </div>
+                <a href="tel:+911" class="emergency-btn btn btn-danger btn-lg px-4 py-3">
+                    <i class="fas fa-phone-alt me-2"></i> Call Emergency
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 5: Floating Consult Button (Mobile) -->
+    <a href="consult.html" class="floating-consult-btn d-lg-none">
+        <i class="fas fa-user-md"></i>
+    </a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Example consultation button handler
+        document.querySelectorAll('.consult-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // In real implementation, this would initiate doctor consultation
+                window.location.href = 'consult.html';
+                
+                // For demo purposes:
+                alert('Redirecting to doctor consultation service...');
+            });
+        });
+        
+        // Emergency button handler
+        document.querySelector('.emergency-btn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to call emergency services?')) {
+                // In real implementation, this would initiate a call
+                alert('Calling emergency services...');
+            }
+        });
+    </script>
+</body>
+</html>

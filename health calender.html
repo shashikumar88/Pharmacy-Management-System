@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Calendar</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --success-color: #38b000;
+            --warning-color: #ffaa00;
+            --danger-color: #ef233c;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+        }
+        
+        .health-calendar-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .calendar-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .event-type-badge {
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 5px;
+        }
+        
+        .appointment-badge {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .medication-badge {
+            background-color: rgba(56, 176, 0, 0.1);
+            color: var(--success-color);
+        }
+        
+        .test-badge {
+            background-color: rgba(255, 170, 0, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .reminder-badge {
+            background-color: rgba(239, 35, 60, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .fc-event {
+            border-radius: 8px;
+            border: none;
+            padding: 3px 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .fc-event-title {
+            white-space: normal;
+        }
+        
+        .health-stats-card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .health-stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-right: 15px;
+        }
+        
+        .appointments-icon {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .medications-icon {
+            background-color: rgba(56, 176, 0, 0.1);
+            color: var(--success-color);
+        }
+        
+        .tests-icon {
+            background-color: rgba(255, 170, 0, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .health-goals-icon {
+            background-color: rgba(239, 35, 60, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .event-modal .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-bottom: none;
+        }
+        
+        .event-modal .modal-footer {
+            border-top: none;
+        }
+        
+        .fc-daygrid-event-dot {
+            display: none;
+        }
+        
+        .fc-toolbar-title {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .fc-button {
+            background-color: white !important;
+            border-color: #dee2e6 !important;
+            color: var(--dark-color) !important;
+        }
+        
+        .fc-button-active {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: white !important;
+        }
+        
+        .health-tabs .nav-link {
+            color: var(--dark-color);
+            font-weight: 500;
+            border: none;
+            padding: 12px 20px;
+        }
+        
+        .health-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            background-color: transparent;
+        }
+        
+        .upcoming-event-card {
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .upcoming-event-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .event-category-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .event-category-btn {
+            border: 2px solid #dee2e6;
+            background-color: white;
+            border-radius: 30px;
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .event-category-btn.active {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .fc-toolbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .fc-toolbar-title {
+                font-size: 1.25rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="health-calendar-container">
+            <div class="calendar-header">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h2><i class="fas fa-calendar-alt me-2"></i>Health Calendar</h2>
+                        <p class="mb-0">Track your medical appointments, medications, and health goals</p>
+                    </div>
+                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                        <button class="btn btn-light me-2" id="todayBtn">
+                            <i class="fas fa-calendar-day me-1"></i>Today
+                        </button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                            <i class="fas fa-plus me-1"></i>Add Event
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4">
+                <!-- Health Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="health-stats-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="stat-icon appointments-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Upcoming Appointments</h6>
+                                    <h3 class="mb-0">4</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="health-stats-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="stat-icon medications-icon">
+                                    <i class="fas fa-pills"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Medications Today</h6>
+                                    <h3 class="mb-0">7</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="health-stats-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="stat-icon tests-icon">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Pending Tests</h6>
+                                    <h3 class="mb-0">2</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="health-stats-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="stat-icon health-goals-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Health Goals</h6>
+                                    <h3 class="mb-0">3</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Calendar and Upcoming Events -->
+                <div class="row">
+                    <div class="col-lg-8 mb-4 mb-lg-0">
+                        <div id="healthCalendar"></div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4"><i class="fas fa-list-ul me-2"></i>Upcoming Events</h5>
+                                
+                                <ul class="nav health-tabs mb-3" id="upcomingTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button">All</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="appointments-tab" data-bs-toggle="tab" data-bs-target="#appointments" type="button">Appointments</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="medications-tab" data-bs-toggle="tab" data-bs-target="#medications" type="button">Medications</button>
+                                    </li>
+                                </ul>
+                                
+                                <div class="tab-content" id="upcomingTabContent">
+                                    <div class="tab-pane fade show active" id="all" role="tabpanel">
+                                        <div class="upcoming-event-card p-3 mb-3">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <span class="event-type-badge appointment-badge">Appointment</span>
+                                                    <h6 class="mb-1">Dr. Smith - Annual Checkup</h6>
+                                                    <p class="mb-1 small text-muted"><i class="fas fa-clock me-1"></i>Today, 10:00 AM</p>
+                                                    <p class="mb-0 small text-muted"><i class="fas fa-map-marker-alt me-1"></i>City Medical Center</p>
+                                                </div>
+                                                <button class="btn btn-sm btn-outline-primary">Details</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="upcoming-event-card p-3 mb-3">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <span class="event-type-badge medication-badge">Medication</span>
+                                                    <h6 class="mb-1">Take Metformin</h6>
+                                                    <p class="mb-1 small text-muted"><i class="fas fa-clock me-1"></i>Today, 12:00 PM</p>
+                                                    <p class="mb-0 small text-muted"><i class="fas fa-pills me-1"></i>1 tablet with food</p>
+                                                </div>
+                                                <button class="btn btn-sm btn-outline-success">Mark Taken</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="upcoming-event-card p-3 mb-3">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <span class="event-type-badge test-badge">Test</span>
+                                                    <h6 class="mb-1">Blood Work - Fasting Required</h6>
+                                                    <p class="mb-1 small text-muted"><i class="fas fa-clock me-1"></i>Tomorrow, 8:00 AM</p>
+                                                    <p class="mb-0 small text-muted"><i class="fas fa-info-circle me-1"></i>No food after midnight</p>
+                                                </div>
+                                                <button class="btn btn-sm btn-outline-primary">Details</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="upcoming-event-card p-3">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <span class="event-type-badge appointment-badge">Appointment</span>
+                                                    <h6 class="mb-1">Physical Therapy Session</h6>
+                                                    <p class="mb-1 small text-muted"><i class="fas fa-clock me-1"></i>Friday, 3:00 PM</p>
+                                                    <p class="mb-0 small text-muted"><i class="fas fa-map-marker-alt me-1"></i>Rehab Center</p>
+                                                </div>
+                                                <button class="btn btn-sm btn-outline-primary">Details</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tab-pane fade" id="appointments" role="tabpanel">
+                                        <!-- Appointment-specific events would go here -->
+                                        <div class="alert alert-light">No upcoming appointments</div>
+                                    </div>
+                                    
+                                    <div class="tab-pane fade" id="medications" role="tabpanel">
+                                        <!-- Medication-specific events would go here -->
+                                        <div class="alert alert-light">No upcoming medications</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Event Modal -->
+    <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEventModalLabel"><i class="fas fa-plus-circle me-2"></i>Add Health Event</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="eventForm">
+                        <div class="event-category-selector">
+                            <div class="event-category-btn active" data-type="appointment">
+                                <i class="fas fa-calendar-check me-1"></i>Appointment
+                            </div>
+                            <div class="event-category-btn" data-type="medication">
+                                <i class="fas fa-pills me-1"></i>Medication
+                            </div>
+                            <div class="event-category-btn" data-type="test">
+                                <i class="fas fa-flask me-1"></i>Test
+                            </div>
+                            <div class="event-category-btn" data-type="reminder">
+                                <i class="fas fa-bell me-1"></i>Reminder
+                            </div>
+                            <div class="event-category-btn" data-type="goal">
+                                <i class="fas fa-heartbeat me-1"></i>Health Goal
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="eventTitle" class="form-label">Event Title</label>
+                                <input type="text" class="form-control" id="eventTitle" placeholder="e.g. Doctor Appointment" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="eventType" class="form-label">Event Type</label>
+                                <select class="form-select" id="eventType" required>
+                                    <option value="appointment">Appointment</option>
+                                    <option value="medication">Medication</option>
+                                    <option value="test">Test/Procedure</option>
+                                    <option value="reminder">Reminder</option>
+                                    <option value="goal">Health Goal</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="startDate" class="form-label">Start Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="startDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="endDate" class="form-label">End Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="endDate">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3" id="medicationFields" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="medicationName" class="form-label">Medication Name</label>
+                                    <input type="text" class="form-control" id="medicationName" placeholder="e.g. Metformin">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="dosage" class="form-label">Dosage</label>
+                                    <input type="text" class="form-control" id="dosage" placeholder="e.g. 500mg">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="frequency" class="form-label">Frequency</label>
+                                    <select class="form-select" id="frequency">
+                                        <option value="once">Once</option>
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3" id="locationFields">
+                            <label for="eventLocation" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="eventLocation" placeholder="e.g. City Medical Center">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="eventDescription" class="form-label">Description/Notes</label>
+                            <textarea class="form-control" id="eventDescription" rows="3" placeholder="Any additional details..."></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="setReminder" checked>
+                                <label class="form-check-label" for="setReminder">
+                                    Set reminder notification
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveEventBtn">
+                        <i class="fas fa-save me-1"></i>Save Event
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Event Details Modal -->
+    <div class="modal fade event-modal" id="eventDetailsModal" tabindex="-1" aria-labelledby="eventDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventDetailsModalLabel">Event Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="event-type-badge appointment-badge" id="detailEventType">Appointment</span>
+                        <span class="badge bg-light text-dark" id="detailEventStatus">Upcoming</span>
+                    </div>
+                    
+                    <h4 id="detailEventTitle">Dr. Smith - Annual Checkup</h4>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-clock me-2"></i>
+                            <span id="detailEventTime">Today, 10:00 AM - 10:30 AM</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <span id="detailEventLocation">City Medical Center</span>
+                        </div>
+                        <div class="d-flex align-items-center" id="detailMedicationInfo" style="display: none;">
+                            <i class="fas fa-pills me-2"></i>
+                            <span>1 tablet (500mg) - Take with food</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Notes:</h6>
+                        <p id="detailEventDescription">Annual physical examination. Bring insurance card and list of current medications.</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-bell me-2"></i>
+                        <span>Reminder set for 1 hour before event</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-primary">
+                        <i class="fas fa-edit me-1"></i>Edit
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize calendar
+            const calendarEl = document.getElementById('healthCalendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                events: [
+                    {
+                        title: 'Dr. Smith - Annual Checkup',
+                        start: new Date(),
+                        end: new Date(new Date().setHours(new Date().getHours() + 1)),
+                        color: '#4361ee',
+                        extendedProps: {
+                            type: 'appointment',
+                            location: 'City Medical Center',
+                            description: 'Annual physical examination. Bring insurance card and list of current medications.',
+                            reminder: true
+                        }
+                    },
+                    {
+                        title: 'Take Metformin',
+                        start: new Date(new Date().setHours(12, 0, 0, 0)),
+                        end: new Date(new Date().setHours(12, 30, 0, 0)),
+                        color: '#38b000',
+                        extendedProps: {
+                            type: 'medication',
+                            dosage: '1 tablet (500mg)',
+                            instructions: 'Take with food',
+                            reminder: true
+                        }
+                    },
+                    {
+                        title: 'Blood Work',
+                        start: new Date(new Date().setDate(new Date().getDate() + 1)),
+                        end: new Date(new Date().setDate(new Date().getDate() + 1)),
+                        color: '#ffaa00',
+                        extendedProps: {
+                            type: 'test',
+                            location: 'LabCorp',
+                            description: 'Fasting required - no food after midnight',
+                            reminder: true
+                        }
+                    },
+                    {
+                        title: 'Physical Therapy',
+                        start: new Date(new Date().setDate(new Date().getDate() + 3)),
+                        end: new Date(new Date().setDate(new Date().getDate() + 3)),
+                        color: '#4361ee',
+                        extendedProps: {
+                            type: 'appointment',
+                            location: 'Rehab Center',
+                            description: 'Knee rehabilitation session',
+                            reminder: true
+                        }
+                    }
+                ],
+                eventClick: function(info) {
+                    const event = info.event;
+                    const modal = new bootstrap.Modal(document.getElementById('eventDetailsModal'));
+                    
+                    // Set modal content based on event type
+                    document.getElementById('detailEventTitle').textContent = event.title;
+                    document.getElementById('detailEventType').textContent = event.extendedProps.type.charAt(0).toUpperCase() + event.extendedProps.type.slice(1);
+                    document.getElementById('detailEventType').className = `event-type-badge ${event.extendedProps.type}-badge`;
+                    
+                    // Format time
+                    const startTime = event.start ? event.start.toLocaleString() : '';
+                    const endTime = event.end ? event.end.toLocaleString() : '';
+                    document.getElementById('detailEventTime').textContent = `${startTime}${endTime ? ' - ' + endTime : ''}`;
+                    
+                    // Set location or medication info
+                    if (event.extendedProps.type === 'medication') {
+                        document.getElementById('detailEventLocation').style.display = 'none';
+                        document.getElementById('detailMedicationInfo').style.display = 'flex';
+                        document.getElementById('detailMedicationInfo').innerHTML = `
+                            <i class="fas fa-pills me-2"></i>
+                            <span>${event.extendedProps.dosage} - ${event.extendedProps.instructions}</span>
+                        `;
+                    } else {
+                        document.getElementById('detailEventLocation').style.display = 'flex';
+                        document.getElementById('detailMedicationInfo').style.display = 'none';
+                        document.getElementById('detailEventLocation').textContent = event.extendedProps.location || 'N/A';
+                    }
+                    
+                    document.getElementById('detailEventDescription').textContent = event.extendedProps.description || 'No additional notes';
+                    
+                    modal.show();
+                }
+            });
+            calendar.render();
+            
+            // Today button
+            document.getElementById('todayBtn').addEventListener('click', function() {
+                calendar.today();
+            });
+            
+            // Event category buttons
+            const categoryButtons = document.querySelectorAll('.event-category-btn');
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById('eventType').value = this.dataset.type;
+                    
+                    // Show/hide additional fields based on type
+                    if (this.dataset.type === 'medication') {
+                        document.getElementById('medicationFields').style.display = 'block';
+                        document.getElementById('locationFields').style.display = 'none';
+                    } else {
+                        document.getElementById('medicationFields').style.display = 'none';
+                        document.getElementById('locationFields').style.display = 'block';
+                    }
+                });
+            });
+            
+            // Save event button
+            document.getElementById('saveEventBtn').addEventListener('click', function() {
+                // In a real implementation, this would save to a database
+                alert('Event saved! In a real implementation, this would be saved to your calendar.');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addEventModal'));
+                modal.hide();
+            });
+            
+            // Set default datetime for new events
+            const now = new Date();
+            const defaultStart = new Date(now.setHours(now.getHours() + 1));
+            const defaultEnd = new Date(defaultStart.getTime() + 30 * 60000); // 30 minutes later
+            
+            document.getElementById('startDate').value = formatDateTimeLocal(defaultStart);
+            document.getElementById('endDate').value = formatDateTimeLocal(defaultEnd);
+        });
+        
+        function formatDateTimeLocal(date) {
+            return date.toISOString().slice(0, 16);
+        }
+    </script>
+</body>
+</html>

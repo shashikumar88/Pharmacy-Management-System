@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Newsletter</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --accent-color: #198754;
+            --newsletter-orange: #fd7e14;
+        }
+        
+        /* Newsletter Button Styles */
+        .newsletter-btn {
+            background-color: var(--newsletter-orange);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .newsletter-btn:hover {
+            background-color: #e66a00;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(253, 126, 20, 0.3);
+            color: white;
+        }
+        
+        .newsletter-input-group {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-card {
+            background: linear-gradient(135deg, rgba(253, 126, 20, 0.1), rgba(255, 193, 7, 0.1));
+            border-radius: 12px;
+            border: none;
+            overflow: hidden;
+        }
+        
+        .newsletter-icon {
+            color: var(--newsletter-orange);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Floating Newsletter Button */
+        .floating-newsletter-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--newsletter-orange);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(253, 126, 20, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-newsletter-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Example 1: Basic Newsletter Button -->
+    <section class="container my-5 text-center">
+        <h3 class="mb-4">Stay Updated with Health Tips</h3>
+        <button class="newsletter-btn">
+            <i class="fas fa-envelope me-2"></i> Subscribe to Newsletter
+        </button>
+    </section>
+    
+    <!-- Example 2: Newsletter Signup Form -->
+    <section class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="newsletter-card p-4 p-md-5 text-center">
+                    <i class="fas fa-paper-plane newsletter-icon"></i>
+                    <h3>Join Our Health Newsletter</h3>
+                    <p class="mb-4">Get monthly health tips, exclusive offers, and medication reminders</p>
+                    
+                    <form class="newsletter-input-group input-group mb-3">
+                        <input type="email" class="form-control form-control-lg" 
+                               placeholder="Your email address" required>
+                        <button class="newsletter-btn px-4" type="submit">
+                            Subscribe
+                        </button>
+                    </form>
+                    
+                    <small class="text-muted">We'll never share your email. Unsubscribe anytime.</small>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 3: Sidebar Newsletter Button -->
+    <section class="container my-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5><i class="fas fa-newspaper me-2 text-warning"></i> Health Digest</h5>
+                        <p>Monthly health news and pharmacy updates</p>
+                        <button class="newsletter-btn w-100">
+                            <i class="fas fa-envelope-open-text me-2"></i> Get Updates
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 4: Floating Newsletter Button (Mobile) -->
+    <button class="floating-newsletter-btn d-lg-none" data-bs-toggle="modal" data-bs-target="#newsletterModal">
+        <i class="fas fa-envelope"></i>
+    </button>
+    
+    <!-- Newsletter Modal -->
+    <div class="modal fade" id="newsletterModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Health Newsletter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-envelope-open-text newsletter-icon"></i>
+                    <h4 class="mb-3">Stay Informed</h4>
+                    <p>Get the latest health tips and pharmacy news delivered to your inbox</p>
+                    
+                    <form class="mt-4">
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Email address" required>
+                        </div>
+                        <button type="submit" class="newsletter-btn w-100">
+                            <i class="fas fa-paper-plane me-2"></i> Subscribe Now
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Example form submission handler
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                alert(`Thank you for subscribing with ${email}! You'll receive our next newsletter soon.`);
+                // In real implementation, send to your backend
+                this.reset();
+                
+                // Hide modal if this is from modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('newsletterModal'));
+                if(modal) modal.hide();
+            });
+        });
+    </script>
+</body>
+</html>

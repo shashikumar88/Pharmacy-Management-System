@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | MediCare</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --accent-color: #198754;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .product-image {
+            border-right: 1px solid #eee;
+        }
+        
+        .product-title {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--danger-color);
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: var(--secondary-color);
+        }
+        
+        .discount-badge {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .prescription-badge {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .quantity-selector {
+            width: 120px;
+        }
+        
+        .quantity-btn {
+            width: 40px;
+            background-color: #f1f1f1;
+            border: none;
+            font-size: 1.1rem;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-add-to-cart {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+        }
+        
+        .btn-add-to-cart:hover {
+            background-color: #157347;
+            color: white;
+        }
+        
+        .btn-buy-now {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+        }
+        
+        .btn-buy-now:hover {
+            background-color: #bb2d3b;
+            color: white;
+        }
+        
+        .product-tabs .nav-link {
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+        
+        .product-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .related-products .card {
+            transition: transform 0.3s;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .related-products .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stock-badge {
+            font-size: 0.8rem;
+        }
+        
+        .prescription-required {
+            border-left: 3px solid var(--danger-color);
+            padding-left: 10px;
+        }
+        
+        .benefits-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .benefits-list li {
+            padding: 5px 0;
+        }
+        
+        .benefits-list li i {
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .product-image {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="bg-primary text-white py-2 d-none d-md-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <i class="fas fa-phone-alt me-2"></i> 24/7 Customer Support: 1-800-MEDICARE
+                </div>
+                <div class="col-md-6 text-end">
+                    <i class="fas fa-truck me-2"></i> Free shipping on orders over $50
+                    <span class="mx-3">|</span>
+                    <i class="fas fa-map-marker-alt me-2"></i> Track Order
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" height="40">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shop.html">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="prescription.html">Prescription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="doctor.html">Doctor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="health-tools.html">Health Tools</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex">
+                    <a href="cart.html" class="btn btn-outline-primary position-relative me-3">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+                    </a>
+                    <a href="account.html" class="btn btn-primary">
+                        <i class="fas fa-user me-1"></i> My Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
+                    <li class="breadcrumb-item"><a href="prescription.html">Prescription</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Atorvastatin 20mg</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Product Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row product-container">
+                <div class="col-md-5 product-image p-4">
+                    <div class="text-center mb-4">
+                        <img src="https://img1.exportersindia.com/product_images/bc-full/2024/3/12347532/atorvastatin-20mg-tablets-1711639734-7350076.jpg" alt="Atorvastatin 20mg" class="img-fluid" style="max-height: 400px;">
+                    </div>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-heart"></i> Add to Wishlist
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-7 p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h1 class="product-title mb-1">Atorvastatin 20mg Tablets</h1>
+                            <p class="text-muted mb-2">Manufacturer: Pfizer Ltd</p>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="text-warning me-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="text-muted small">(42 reviews)</span>
+                            </div>
+                        </div>
+                        <span class="prescription-badge badge">Rx Required</span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <span class="product-price">$12.99</span>
+                        <span class="original-price ms-2">$15.99</span>
+                        <span class="discount-badge badge ms-2">Save 19%</span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="fw-bold me-2">Pack Size:</span>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <input type="radio" class="btn-check" name="packsize" id="packsize1" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="packsize1">30 Tablets</label>
+                                
+                                <input type="radio" class="btn-check" name="packsize" id="packsize2" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="packsize2">60 Tablets</label>
+                                
+                                <input type="radio" class="btn-check" name="packsize" id="packsize3" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="packsize3">90 Tablets</label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <span class="fw-bold me-2">Availability:</span>
+                            <span class="stock-badge badge bg-success">In Stock</span>
+                            <span class="text-muted small ms-2">Ships within 24 hours</span>
+                        </div>
+                        
+                        <div class="prescription-required mb-4">
+                            <p class="text-danger mb-1"><i class="fas fa-exclamation-circle me-2"></i>Prescription required</p>
+                            <p class="small text-muted">Upload your prescription after adding to cart or consult our doctor online.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="fw-bold me-3">Quantity:</span>
+                            <div class="d-flex quantity-selector">
+                                <button class="quantity-btn minus-btn">-</button>
+                                <input type="number" class="quantity-input form-control" value="1" min="1" max="10">
+                                <button class="quantity-btn plus-btn">+</button>
+                            </div>
+                            <span class="text-muted small ms-3">Max 10 per order</span>
+                        </div>
+                        
+                        <div class="d-flex flex-wrap gap-3 mb-4">
+                            <button class="btn btn-add-to-cart flex-grow-1">
+                                <i class="fas fa-cart-plus me-2"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-buy-now flex-grow-1">
+                                <i class="fas fa-bolt me-2"></i> Buy Now
+                            </button>
+                        </div>
+                        
+                        <div class="alert alert-success d-flex align-items-center" role="alert" style="display: none;" id="cartSuccessAlert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <div>
+                                Product added to cart successfully! <a href="cart.html" class="alert-link">View Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-top pt-3">
+                        <h5 class="mb-3">Key Benefits:</h5>
+                        <ul class="benefits-list">
+                            <li><i class="fas fa-check-circle"></i> Helps lower bad cholesterol (LDL) and triglycerides</li>
+                            <li><i class="fas fa-check-circle"></i> Raises good cholesterol (HDL) levels</li>
+                            <li><i class="fas fa-check-circle"></i> Reduces risk of heart attack and stroke</li>
+                            <li><i class="fas fa-check-circle"></i> FDA approved medication</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Tabs Section -->
+    <section class="pb-5">
+        <div class="container">
+            <div class="product-container p-4">
+                <ul class="nav product-tabs mb-4" id="productTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="directions-tab" data-bs-toggle="tab" data-bs-target="#directions" type="button" role="tab">Directions</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="ingredients-tab" data-bs-toggle="tab" data-bs-target="#ingredients" type="button" role="tab">Ingredients</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="precautions-tab" data-bs-toggle="tab" data-bs-target="#precautions" type="button" role="tab">Precautions</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="productTabsContent">
+                    <div class="tab-pane fade show active" id="description" role="tabpanel">
+                        <h5>About Atorvastatin 20mg Tablets</h5>
+                        <p>Atorvastatin is used to treat high cholesterol and to lower the risk of stroke, heart attack, or other heart complications in people with type 2 diabetes, coronary heart disease, or other risk factors.</p>
+                        <p>Atorvastatin belongs to a group of drugs called HMG CoA reductase inhibitors, or "statins." It works by reducing the amount of cholesterol made by the liver. Lowering your blood level of cholesterol and fats helps prevent heart disease and hardening of the arteries, conditions that can lead to heart attack, stroke, and vascular disease.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="directions" role="tabpanel">
+                        <h5>How to use Atorvastatin 20mg</h5>
+                        <p>Take this medication by mouth with or without food as directed by your doctor, usually once daily.</p>
+                        <p>The dosage is based on your medical condition, response to treatment, age, and other medications you may be taking. Be sure to tell your doctor and pharmacist about all the products you use (including prescription drugs, nonprescription drugs, and herbal products).</p>
+                        <p>Take this medication regularly in order to get the most benefit from it. Remember to take it at the same time each day. Keep taking this medication even if you feel well. Most people with high cholesterol or triglycerides do not feel sick.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="ingredients" role="tabpanel">
+                        <h5>Active Ingredients</h5>
+                        <p>Each tablet contains:</p>
+                        <ul>
+                            <li>Atorvastatin Calcium Trihydrate equivalent to Atorvastatin 20mg</li>
+                        </ul>
+                        
+                        <h5 class="mt-4">Inactive Ingredients</h5>
+                        <p>Calcium Carbonate, Croscarmellose Sodium, Lactose Monohydrate, Magnesium Stearate, Microcrystalline Cellulose, Hydroxypropyl Cellulose, Polysorbate 80, Titanium Dioxide, and Triacetin.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="precautions" role="tabpanel">
+                        <h5>Precautions</h5>
+                        <p>Before taking atorvastatin, tell your doctor or pharmacist if you are allergic to it; or if you have any other allergies. This product may contain inactive ingredients, which can cause allergic reactions or other problems.</p>
+                        <p>Before using this medication, tell your doctor or pharmacist your medical history, especially of: liver disease, kidney disease, alcohol use.</p>
+                        <p>Before having surgery, tell your doctor or dentist about all the products you use (including prescription drugs, nonprescription drugs, and herbal products).</p>
+                        <p>Limit alcoholic beverages. Daily use of alcohol may increase your risk for liver problems, especially when combined with atorvastatin.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        <h5>Customer Reviews</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div>
+                                                <span class="fw-bold">John D.</span>
+                                                <div class="text-warning small">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                            </div>
+                                            <span class="text-muted small">2 weeks ago</span>
+                                        </div>
+                                        <p class="mb-0">This medication has helped lower my cholesterol significantly within just 3 months. Very effective!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div>
+                                                <span class="fw-bold">Sarah M.</span>
+                                                <div class="text-warning small">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                </div>
+                                            </div>
+                                            <span class="text-muted small">1 month ago</span>
+                                        </div>
+                                        <p class="mb-0">Works well but had some muscle pain initially. Doctor adjusted dosage and now it's perfect.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary">View All Reviews</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="pb-5">
+        <div class="container">
+            <h3 class="mb-4">You May Also Like</h3>
+            <div class="row related-products">
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100">
+                        <div class="card-img-top position-relative">
+                            <img src="https://images.apollo247.in/pub/media/catalog/product/a/p/apb0063-02.jpg" class="card-img-top" alt="Related Product">
+                            <span class="badge bg-danger position-absolute top-0 start-0">Rx</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Rosuvastatin 10mg</h5>
+                            <p class="card-text text-muted small">30 Tablets</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-danger">$14.99</span>
+                                <span class="badge bg-success small">In Stock</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-sm btn-primary w-100">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100">
+                        <div class="card-img-top position-relative">
+                            <img src="https://www.netmeds.com/images/product-v1/600x600/909962/crestor_10mg_tablet_10_s_0.jpg" class="card-img-top" alt="Related Product">
+                            <span class="badge bg-danger position-absolute top-0 start-0">Rx</span>
+                            <span class="badge bg-success position-absolute top-0 end-0">-15%</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Simvastatin 20mg</h5>
+                            <p class="card-text text-muted small">30 Tablets</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold text-danger">$10.99</span>
+                                    <span class="text-muted text-decoration-line-through small ms-2">$12.99</span>
+                                </div>
+                                <span class="badge bg-success small">In Stock</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-sm btn-primary w-100">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100">
+                        <div class="card-img-top position-relative">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2023/5/305690446/HT/QX/YK/190741525/atorvastatin-10mg-tablet.jpg" class="card-img-top" alt="Related Product">
+                            <span class="badge bg-danger position-absolute top-0 start-0">Rx</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Atorvastatin 10mg</h5>
+                            <p class="card-text text-muted small">30 Tablets</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-danger">$9.99</span>
+                                <span class="badge bg-success small">In Stock</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-sm btn-primary w-100">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100">
+                        <div class="card-img-top position-relative">
+                            <img src="https://www.netmeds.com/images/product-v1/600x600/909962/crestor_10mg_tablet_10_s_0.jpg" class="card-img-top" alt="Related Product">
+                            <span class="badge bg-danger position-absolute top-0 start-0">Rx</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Pravastatin 40mg</h5>
+                            <p class="card-text text-muted small">30 Tablets</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-danger">$16.49</span>
+                                <span class="badge bg-success small">In Stock</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-sm btn-primary w-100">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prescription Reminder Modal -->
+    <div class="modal fade" id="prescriptionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Prescription Required</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This product requires a valid prescription from a licensed healthcare provider.</p>
+                    <p>You can:</p>
+                    <ol>
+                        <li>Upload your prescription after adding to cart</li>
+                        <li>Consult our online doctor to get a prescription</li>
+                    </ol>
+                    
+                    <div class="d-flex flex-column gap-3 mt-4">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-upload me-2"></i> Upload Prescription
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-user-md me-2"></i> Consult Doctor
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 mb-4">
+                    <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" height="40" class="mb-3">
+                    <p class="small text-muted">Your trusted online pharmacy for genuine medicines, health products, and doctor consultations.</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2 mb-4">
+                    <h5 class="h6">Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Prescription</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">OTC Medicines</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Wellness</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Personal Care</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2 mb-4">
+                    <h5 class="h6">Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Doctor Consultation</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Medicine Reminder</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Tools</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2 mb-4">
+                    <h5 class="h6">Information</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-3 mb-4">
+                    <h5 class="h6">Newsletter</h5>
+                    <p class="small text-muted">Subscribe to get health tips and special offers</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control form-control-sm" placeholder="Your email">
+                        <button class="btn btn-primary btn-sm" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small mb-0">&copy; 2023 MediCare. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                        <img src="https://pngimg.com/uploads/visa/visa_PNG4.png" alt="Visa" height="20">
+                        <img src="https://pngimg.com/uploads/mastercard/mastercard_PNG23.png" alt="Mastercard" height="20">
+                        <img src="https://images.fastcompany.net/image/upload/w_596,c_limit,q_auto:best,f_auto,fl_lossy/wp-cms/uploads/sites/4/2018/04/4-you-might-not-notice-amex-new-brand.jpg" alt="Amex" height="20">
+                        <img src="https://seeklogo.com/images/P/paypal-logo-484B6FE744-seeklogo.com.png" alt="PayPal" height="20">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Quantity Selector
+        document.querySelector('.minus-btn').addEventListener('click', function() {
+            const quantityInput = document.querySelector('.quantity-input');
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
+        
+        document.querySelector('.plus-btn').addEventListener('click', function() {
+            const quantityInput = document.querySelector('.quantity-input');
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue < 10) {
+                quantityInput.value = currentValue + 1;
+            }
+        });
+        
+        // Add to Cart Functionality
+        document.querySelector('.btn-add-to-cart').addEventListener('click', function() {
+            // In a real application, this would add the product to the cart
+            // For demonstration, we'll show a success message
+            
+            const alert = document.getElementById('cartSuccessAlert');
+            alert.style.display = 'flex';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+            
+            // Show prescription modal for Rx products
+            const prescriptionModal = new bootstrap.Modal(document.getElementById('prescriptionModal'));
+            prescriptionModal.show();
+        });
+        
+        // Buy Now Functionality
+        document.querySelector('.btn-buy-now').addEventListener('click', function() {
+            // In a real application, this would add to cart and redirect to checkout
+            // For demonstration, we'll show the prescription modal
+            
+            const prescriptionModal = new bootstrap.Modal(document.getElementById('prescriptionModal'));
+            prescriptionModal.show();
+        });
+        
+        // Related Products Add to Cart
+        document.querySelectorAll('.related-products .btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // In a real application, this would add the related product to cart
+                alert('Product added to cart!');
+            });
+        });
+    </script>
+</body>
+</html>

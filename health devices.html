@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Monitoring Devices | MediCare</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --accent-color: #198754;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --health-blue: #0077b6;
+            --health-green: #2a9d8f;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .health-devices-header {
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: white;
+            padding: 4rem 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 3rem;
+        }
+        
+        .device-card {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .device-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .device-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--health-blue);
+        }
+        
+        .badge-health {
+            background-color: var(--health-green);
+            color: white;
+        }
+        
+        .category-badge {
+            background-color: var(--health-blue);
+            color: white;
+        }
+        
+        .feature-box {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        
+        .comparison-table th {
+            background-color: var(--health-blue);
+            color: white;
+        }
+        
+        .tech-highlight {
+            border-left: 4px solid var(--health-blue);
+            padding-left: 15px;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--health-blue);
+        }
+        
+        .nav-pills .nav-link {
+            color: var(--health-blue);
+        }
+        
+        .sticky-sidebar {
+            position: sticky;
+            top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .health-devices-header {
+                padding: 2rem 0;
+            }
+            
+            .display-4 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="health-devices-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold"><i class="fas fa-heartbeat me-3"></i>Health Monitoring Devices</h1>
+            <p class="lead">Advanced technology for tracking your health at home</p>
+        </div>
+    </header>
+
+    <div class="container mb-5">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Categories Section -->
+                <section class="mb-5">
+                    <h2 class="h3 fw-bold mb-4 border-bottom pb-2"><i class="fas fa-list-alt me-2"></i>Device Categories</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="device-card bg-white text-center p-4 h-100">
+                                <i class="fas fa-heart device-icon"></i>
+                                <h4>Cardiac Monitors</h4>
+                                <p class="text-muted">Track heart rate, ECG, and blood pressure</p>
+                                <a href="#" class="btn btn-outline-primary rounded-pill">View Devices</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="device-card bg-white text-center p-4 h-100">
+                                <i class="fas fa-tint device-icon"></i>
+                                <h4>Glucose Monitors</h4>
+                                <p class="text-muted">Blood sugar tracking for diabetics</p>
+                                <a href="#" class="btn btn-outline-primary rounded-pill">View Devices</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="device-card bg-white text-center p-4 h-100">
+                                <i class="fas fa-lungs device-icon"></i>
+                                <h4>Respiratory Devices</h4>
+                                <p class="text-muted">Spirometers and oximeters</p>
+                                <a href="#" class="btn btn-outline-primary rounded-pill">View Devices</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="device-card bg-white text-center p-4 h-100">
+                                <i class="fas fa-bed device-icon"></i>
+                                <h4>Sleep Trackers</h4>
+                                <p class="text-muted">Monitor sleep patterns and quality</p>
+                                <a href="#" class="btn btn-outline-primary rounded-pill">View Devices</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="device-card bg-white text-center p-4 h-100">
+                                <i class="fas fa-weight device-icon"></i>
+                                <h4>Body Composition</h4>
+                                <p class="text-muted">Smart scales and BMI analyzers</p>
+                                <a href="#" class="btn btn-outline-primary rounded-pill">View Devices</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="device-card bg-white text-center p-4 h-100">
+                                <i class="fas fa-brain device-icon"></i>
+                                <h4>Neurological</h4>
+                                <p class="text-muted">EEG and migraine tracking</p>
+                                <a href="#" class="btn btn-outline-primary rounded-pill">View Devices</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Devices -->
+                <section class="mb-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="h3 fw-bold"><i class="fas fa-star me-2"></i>Featured Devices</h2>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="device-card bg-white p-3 h-100">
+                                <div class="position-relative mb-3">
+                                    <img src="https://tse4.mm.bing.net/th?id=OIP.1a8KLPpNp55k6_0QwgluKQHaHa&pid=Api&P=0&h=180" alt="Health Device" class="img-fluid rounded">
+                                    <span class="badge badge-health position-absolute top-0 start-0">BESTSELLER</span>
+                                </div>
+                                <h5 class="mb-1">Omron Blood Pressure Monitor</h5>
+                                <p class="text-muted small mb-2">Upper arm, Bluetooth connectivity</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold text-primary">$89.99</span>
+                                        <span class="text-muted text-decoration-line-through small ms-2">$99.99</span>
+                                    </div>
+                                    <span class="badge bg-success small">In Stock</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="device-card bg-white p-3 h-100">
+                                <div class="position-relative mb-3">
+                                    <img src="https://mma.prnewswire.com/media/1281958/Abbott_FreeStyle_Libre_3_Sensor_and_Smartphone.jpg?p=facebook" alt="Health Device" class="img-fluid rounded">
+                                    <span class="badge badge-health position-absolute top-0 start-0">NEW</span>
+                                </div>
+                                <h5 class="mb-1">Freestyle Libre 3</h5>
+                                <p class="text-muted small mb-2">Continuous glucose monitoring system</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold text-primary">$129.99</span>
+                                    </div>
+                                    <span class="badge bg-success small">In Stock</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="device-card bg-white p-3 h-100">
+                                <div class="position-relative mb-3">
+                                    <img src="https://www.slashgear.com/wp-content/uploads/2020/04/withings_sleep_apnea.jpg" alt="Health Device" class="img-fluid rounded">
+                                </div>
+                                <h5 class="mb-1">Withings Sleep Analyzer</h5>
+                                <p class="text-muted small mb-2">Advanced sleep tracking mat</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold text-primary">$149.99</span>
+                                        <span class="text-muted text-decoration-line-through small ms-2">$179.99</span>
+                                    </div>
+                                    <span class="badge bg-warning text-dark small">Low Stock</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Technology Highlights -->
+                <section class="mb-5">
+                    <h2 class="h3 fw-bold mb-4 border-bottom pb-2"><i class="fas fa-microchip me-2"></i>Technology Highlights</h2>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="feature-box">
+                                <h4><i class="fas fa-bluetooth-b me-2"></i>Bluetooth Connectivity</h4>
+                                <p class="tech-highlight">Modern health devices sync seamlessly with your smartphone, allowing you to track trends over time and share data with healthcare providers.</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge category-badge">iOS/Android Apps</span>
+                                    <span class="badge category-badge">Cloud Storage</span>
+                                    <span class="badge category-badge">Doctor Sharing</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-box">
+                                <h4><i class="fas fa-battery-full me-2"></i>Long Battery Life</h4>
+                                <p class="tech-highlight">Advanced power management enables continuous monitoring for weeks or even months on a single charge or set of batteries.</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge category-badge">Rechargeable</span>
+                                    <span class="badge category-badge">Low Power Mode</span>
+                                    <span class="badge category-badge">Solar Options</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-box">
+                                <h4><i class="fas fa-shield-alt me-2"></i>Medical Grade Accuracy</h4>
+                                <p class="tech-highlight">Many home devices now meet clinical standards, providing professional-level accuracy in the comfort of your home.</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge category-badge">FDA Approved</span>
+                                    <span class="badge category-badge">CE Certified</span>
+                                    <span class="badge category-badge">Clinical Validation</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-box">
+                                <h4><i class="fas fa-robot me-2"></i>AI Analysis</h4>
+                                <p class="tech-highlight">Artificial intelligence detects patterns and provides personalized insights about your health metrics over time.</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge category-badge">Trend Analysis</span>
+                                    <span class="badge category-badge">Early Warnings</span>
+                                    <span class="badge category-badge">Personalized Tips</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Device Comparison -->
+                <section class="mb-5">
+                    <h2 class="h3 fw-bold mb-4 border-bottom pb-2"><i class="fas fa-balance-scale me-2"></i>Top Blood Pressure Monitors Comparison</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Accuracy</th>
+                                    <th>Features</th>
+                                    <th>Connectivity</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Omron Platinum</td>
+                                    <td>±3 mmHg</td>
+                                    <td>Advanced averaging, hypertension detection</td>
+                                    <td>Bluetooth</td>
+                                    <td>$99.99</td>
+                                </tr>
+                                <tr>
+                                    <td>Withings BPM Core</td>
+                                    <td>±3 mmHg</td>
+                                    <td>ECG, stethoscope, BP</td>
+                                    <td>WiFi/Bluetooth</td>
+                                    <td>$249.95</td>
+                                </tr>
+                                <tr>
+                                    <td>Beurer BM55</td>
+                                    <td>±3 mmHg</td>
+                                    <td>Basic monitoring, irregular heartbeat</td>
+                                    <td>None</td>
+                                    <td>$49.99</td>
+                                </tr>
+                                <tr>
+                                    <td>iHealth Track</td>
+                                    <td>±3 mmHg</td>
+                                    <td>App integration, unlimited users</td>
+                                    <td>Bluetooth</td>
+                                    <td>$79.95</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- How To Choose Section -->
+                <section class="mb-5">
+                    <h2 class="h3 fw-bold mb-4 border-bottom pb-2"><i class="fas fa-question-circle me-2"></i>How To Choose The Right Device</h2>
+                    <div class="accordion" id="chooseAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                    <i class="fas fa-check-circle me-2 text-success"></i>Consider Your Specific Needs
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#chooseAccordion">
+                                <div class="accordion-body">
+                                    <p>Identify what health metrics are most important for you to track. Diabetics need glucose monitors, while those with hypertension should prioritize accurate blood pressure devices.</p>
+                                    <ul>
+                                        <li>Chronic condition management</li>
+                                        <li>General wellness tracking</li>
+                                        <li>Post-surgery/recovery monitoring</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                    <i class="fas fa-check-circle me-2 text-success"></i>Check for Medical Approvals
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#chooseAccordion">
+                                <div class="accordion-body">
+                                    <p>Look for devices that are FDA-cleared or CE-marked, which means they've met certain standards for medical devices. This ensures better accuracy and reliability.</p>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-primary">FDA 510(k)</span>
+                                        <span class="badge bg-primary">CE Mark</span>
+                                        <span class="badge bg-primary">Clinical Validation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                    <i class="fas fa-check-circle me-2 text-success"></i>Evaluate Tech Features
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#chooseAccordion">
+                                <div class="accordion-body">
+                                    <p>Consider what technology features would be most useful for your situation:</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li>Bluetooth/WiFi connectivity</li>
+                                                <li>App functionality</li>
+                                                <li>Multi-user support</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li>Data export options</li>
+                                                <li>Battery life</li>
+                                                <li>Alerts and reminders</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sticky-sidebar">
+                    <!-- Quick Links -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-link me-2"></i>Quick Links</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-heartbeat me-2"></i>Cardiac Health</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-tint me-2"></i>Diabetes Care</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-lungs me-2"></i>Respiratory</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-bed me-2"></i>Sleep Health</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-question-circle me-2"></i>Device FAQs</a>
+                        </div>
+                    </div>
+
+                    <!-- Device Setup Videos -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-video me-2"></i>Setup Videos</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-play-circle me-2 text-danger"></i>
+                                Blood Pressure Monitor Setup
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-play-circle me-2 text-danger"></i>
+                                Glucose Meter Tutorial
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-play-circle me-2 text-danger"></i>
+                                Pulse Oximeter Guide
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-play-circle me-2 text-danger"></i>
+                                Smart Scale Setup
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Support Resources -->
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-life-ring me-2"></i>Support Resources</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6><i class="fas fa-phone-alt me-2"></i>Device Support</h6>
+                                <small class="text-muted">1-800-DEVICES</small>
+                            </div>
+                            <div class="mb-3">
+                                <h6><i class="fas fa-envelope me-2"></i>Email Support</h6>
+                                <small class="text-muted">devices@medicare.com</small>
+                            </div>
+                            <div class="mb-3">
+                                <h6><i class="fas fa-comments me-2"></i>Live Chat</h6>
+                                <small class="text-muted">Available 24/7</small>
+                            </div>
+                            <button class="btn btn-outline-primary w-100">
+                                <i class="fas fa-download me-2"></i>Download Manuals
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><i class="fas fa-heartbeat me-2"></i>MediCare Health Devices</h5>
+                    <p class="text-muted">Providing accurate, affordable health monitoring solutions since 2012.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2 col-6 mb-4 mb-md-0">
+                    <h5>Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted">New Arrivals</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Best Sellers</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Deals</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Bundles</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Refurbished</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-6 mb-4 mb-md-0">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted">Health Guides</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Device Reviews</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Research</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Newsletter</h5>
+                    <p class="text-muted">Subscribe for health tips and device updates.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Your email">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="newsletterCheck">
+                        <label class="form-check-label small text-muted" for="newsletterCheck">
+                            I agree to receive health-related information
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted small">
+                <p class="mb-0">© 2023 MediCare Health Devices. All rights reserved. | <a href="#" class="text-muted">Privacy Policy</a> | <a href="#" class="text-muted">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

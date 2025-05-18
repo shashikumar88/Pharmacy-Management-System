@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mom & Baby Care</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --baby-pink: #ffb6c1;
+            --baby-blue: #89cff0;
+            --soft-purple: #d8bfd8;
+            --light-green: #e8f5e9;
+        }
+        
+        body {
+            font-family: 'Comfortaa', cursive;
+            background-color: #fff9fb;
+            color: #333;
+        }
+        
+        .baby-header {
+            background: linear-gradient(135deg, #ffb6c1, #ff8fab);
+            color: white;
+            padding: 4rem 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 3rem;
+        }
+        
+        .category-card {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .baby-pink-bg {
+            background-color: var(--baby-pink);
+            color: white;
+        }
+        
+        .baby-blue-bg {
+            background-color: var(--baby-blue);
+            color: white;
+        }
+        
+        .soft-purple-bg {
+            background-color: var(--soft-purple);
+            color: white;
+        }
+        
+        .light-green-bg {
+            background-color: var(--light-green);
+        }
+        
+        .baby-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .product-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .badge-baby {
+            background-color: #ff6b88;
+            color: white;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: #ff6b88;
+        }
+        
+        .nav-pills .nav-link {
+            color: #ff6b88;
+        }
+        
+        .sticky-sidebar {
+            position: sticky;
+            top: 20px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ffb6c1;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6b88;
+            border: 4px solid #ffb6c1;
+        }
+        
+        @media (max-width: 768px) {
+            .baby-header {
+                padding: 2rem 0;
+            }
+            
+            .display-4 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="baby-header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold"><i class="fas fa-baby me-3"></i>Mom & Baby Care</h1>
+            <p class="lead">Everything you need for your pregnancy and baby's first years</p>
+        </div>
+    </header>
+
+    <div class="container mb-5">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Pregnancy Section -->
+                <section class="mb-5">
+                    <h2 class="h3 fw-bold mb-4 border-bottom pb-2"><i class="fas fa-female me-2"></i>Pregnancy Care</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="category-card baby-pink-bg text-center p-4 h-100">
+                                <i class="fas fa-pills baby-icon"></i>
+                                <h4>Prenatal Vitamins</h4>
+                                <p>Essential supplements for mom and baby's health</p>
+                                <a href="#" class="btn btn-light rounded-pill">Shop Now</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="category-card baby-blue-bg text-center p-4 h-100">
+                                <i class="fas fa-book-medical baby-icon"></i>
+                                <h4>Pregnancy Guides</h4>
+                                <p>Books and resources for expecting mothers</p>
+                                <a href="#" class="btn btn-light rounded-pill">View All</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="category-card soft-purple-bg text-center p-4 h-100">
+                                <i class="fas fa-spa baby-icon"></i>
+                                <h4>Comfort Products</h4>
+                                <p>Items to make pregnancy more comfortable</p>
+                                <a href="#" class="btn btn-light rounded-pill">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Baby Care Section -->
+                <section class="mb-5">
+                    <h2 class="h3 fw-bold mb-4 border-bottom pb-2"><i class="fas fa-baby-carriage me-2"></i>Baby Care Essentials</h2>
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="product-card bg-white p-3 h-100">
+                                <div class="position-relative mb-3">
+                                    <img src="https://i.pinimg.com/originals/b6/0e/ca/b60ecae785985afacde104ab1ed83b12.jpg" alt="Baby Product" class="img-fluid rounded">
+                                    <span class="badge badge-baby position-absolute top-0 start-0">BESTSELLER</span>
+                                </div>
+                                <h5 class="mb-1">Organic Baby Lotion</h5>
+                                <p class="text-muted small mb-2">Hypoallergenic & Fragrance-Free</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold text-primary">$12.99</span>
+                                        <span class="text-muted text-decoration-line-through small ms-2">$15.99</span>
+                                    </div>
+                                    <span class="badge bg-success small">In Stock</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="product-card bg-white p-3 h-100">
+                                <div class="position-relative mb-3">
+                                    <img src="https://i5.walmartimages.com/asr/edae8960-f3df-4e6e-83e6-597fd4694ecf.b7753a05a678c751591c5e03b3bec026.jpeg" alt="Baby Product" class="img-fluid rounded">
+                                    <span class="badge badge-baby position-absolute top-0 start-0">NEW</span>
+                                </div>
+                                <h5 class="mb-1">Diaper Backpack</h5>
+                                <p class="text-muted small mb-2">Multi-functional with changing pad</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold text-primary">$49.99</span>
+                                    </div>
+                                    <span class="badge bg-success small">In Stock</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="product-card bg-white p-3 h-100">
+                                <div class="position-relative mb-3">
+                                    <img src="https://i5.walmartimages.com/asr/46ae76be-766f-4794-82f3-a1c5118791bf.e39b7943e8fbb2f685df196aad415568.jpeg" alt="Baby Product" class="img-fluid rounded">
+                                </div>
+                                <h5 class="mb-1">Anti-Colic Bottles</h5>
+                                <p class="text-muted small mb-2">Set of 3 with natural flow nipples</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold text-primary">$24.99</span>
+                                        <span class="text-muted text-decoration-line-through small ms-2">$29.99</span>
+                                    </div>
+                                    <span class="badge bg-success small">In Stock</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="product-card bg-white p-3 h-100">
+                                <div class="position-relative mb-3">
+                                    <img src="https://m.media-amazon.com/images/I/71v8znYvNWL.jpg" alt="Baby Product" class="img-fluid rounded">
+                                    <span class="badge badge-baby position-absolute top-0 start-0">TOP RATED</span>
+                                </div>
+                                <h5 class="mb-1">Smart Baby Monitor</h5>
+                                <p class="text-muted small mb-2">HD video with temperature sensor</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="fw-bold text-primary">$129.99</span>
+                                    </div>
+                                    <span class="badge bg-warning text-dark small">Low Stock</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Feeding Section -->
+                <section class="mb-5">
+                    <h2 class="h3 fw-bold mb-4 border-bottom pb-2"><i class="fas fa-utensils me-2"></i>Feeding & Nutrition</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="light-green-bg p-4 rounded mb-4 h-100">
+                                <h4><i class="fas fa-prescription-bottle-alt me-2"></i>Breastfeeding Essentials</h4>
+                                <p>Comfortable nursing bras, pumps, and accessories to support breastfeeding mothers.</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge bg-light text-dark">Nursing Pads</span>
+                                    <span class="badge bg-light text-dark">Breast Pumps</span>
+                                    <span class="badge bg-light text-dark">Nipple Cream</span>
+                                    <span class="badge bg-light text-dark">Nursing Pillows</span>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-success mt-3">View Products</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="light-green-bg p-4 rounded mb-4 h-100">
+                                <h4><i class="fas fa-blender me-2"></i>Solid Food Starters</h4>
+                                <p>Everything you need when your baby is ready to start solid foods around 6 months.</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge bg-light text-dark">Baby Spoons</span>
+                                    <span class="badge bg-light text-dark">Sippy Cups</span>
+                                    <span class="badge bg-light text-dark">Food Pouches</span>
+                                    <span class="badge bg-light text-dark">Bib Sets</span>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-success mt-3">View Products</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Milestones Timeline -->
+                <section class="mb-5">
+                    <h2 class="h3 fw-bold mb-4 border-bottom pb-2"><i class="fas fa-baby me-2"></i>Baby's First Year Milestones</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h5>0-3 Months</h5>
+                            <p>First smiles, head control, recognizing faces, cooing sounds.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5>4-6 Months</h5>
+                            <p>Rolling over, babbling, reaching for objects, first foods.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5>7-9 Months</h5>
+                            <p>Sitting without support, crawling, first words, pincer grasp.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5>10-12 Months</h5>
+                            <p>Pulling to stand, first steps, simple gestures, more words.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="sticky-sidebar">
+                    <!-- Quick Links -->
+                    <div class="card mb-4">
+                        <div class="card-header baby-pink-bg text-white">
+                            <h5 class="mb-0"><i class="fas fa-link me-2"></i>Quick Links</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-heartbeat me-2"></i>Prenatal Care</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-baby me-2"></i>Newborn Essentials</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-pills me-2"></i>Baby Medicine Cabinet</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-book me-2"></i>Parenting Resources</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-question-circle me-2"></i>FAQ</a>
+                        </div>
+                    </div>
+
+                    <!-- Due Date Calculator -->
+                    <div class="card mb-4">
+                        <div class="card-header baby-blue-bg text-white">
+                            <h5 class="mb-0"><i class="fas fa-calculator me-2"></i>Due Date Calculator</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">First Day of Last Period</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <button class="btn btn-primary w-100">Calculate</button>
+                            <div class="mt-3 text-center">
+                                <h6 class="text-muted">Estimated Due Date:</h6>
+                                <h4 class="text-primary">January 15, 2024</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Articles -->
+                    <div class="card">
+                        <div class="card-header soft-purple-bg text-white">
+                            <h5 class="mb-0"><i class="fas fa-newspaper me-2"></i>Popular Articles</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h6 class="mb-1">Preparing Your Hospital Bag</h6>
+                                <small class="text-muted">What to pack for delivery</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h6 class="mb-1">Baby Sleep Training Methods</h6>
+                                <small class="text-muted">Gentle approaches that work</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h6 class="mb-1">Postpartum Recovery Tips</h6>
+                                <small class="text-muted">Caring for yourself after birth</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h6 class="mb-1">Introducing Solid Foods</h6>
+                                <small class="text-muted">Baby-led weaning guide</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><i class="fas fa-baby me-2"></i>Mom & Baby Care</h5>
+                    <p class="text-muted">Providing quality products and resources for mothers and babies since 2010.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2 col-6 mb-4 mb-md-0">
+                    <h5>Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted">Pregnancy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Newborn</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Feeding</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Nursery</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Toys</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-6 mb-4 mb-md-0">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted">Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Milestones</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Vaccination</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">Recipes</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Newsletter</h5>
+                    <p class="text-muted">Subscribe for parenting tips and exclusive offers.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Your email">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted small">
+                <p class="mb-0">© 2023 Mom & Baby Care. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

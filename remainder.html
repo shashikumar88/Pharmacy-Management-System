@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Medicine Reminder</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --accent-color: #198754;
+        }
+        
+        .reminder-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .reminder-btn:hover {
+            background-color: #157347;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(25, 135, 84, 0.2);
+            color: white;
+        }
+        
+        .reminder-btn i {
+            margin-right: 8px;
+        }
+        
+        .floating-reminder-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-reminder-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+        }
+        
+        .reminder-card {
+            border-left: 4px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        
+        .reminder-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Example 1: Basic Reminder Button -->
+    <section class="container my-5 text-center">
+        <h3 class="mb-4">Never Miss a Dose</h3>
+        <button class="reminder-btn">
+            <i class="fas fa-bell"></i> Set Medication Reminder
+        </button>
+    </section>
+    
+    <!-- Example 2: Reminder Card with Button -->
+    <section class="container my-5">
+        <div class="card reminder-card border-0">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4><i class="fas fa-clock text-success me-2"></i> Medication Reminders</h4>
+                        <p class="mb-0">Get notified when it's time to take your medicine</p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <button class="reminder-btn px-4 py-2">
+                            <i class="fas fa-plus-circle"></i> Add Reminder
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Example 3: Floating Reminder Button (Mobile) -->
+    <button class="floating-reminder-btn d-lg-none">
+        <i class="fas fa-bell"></i>
+    </button>
+    
+    <!-- Example 4: Reminder Form -->
+    <section class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0"><i class="fas fa-bell me-2"></i>New Medication Reminder</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Medicine Name</label>
+                                <input type="text" class="form-control" placeholder="e.g. Amoxicillin">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Dosage</label>
+                                <input type="text" class="form-control" placeholder="e.g. 1 tablet">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Frequency</label>
+                                <select class="form-select">
+                                    <option>Once daily</option>
+                                    <option>Twice daily</option>
+                                    <option>Three times daily</option>
+                                    <option>Every 6 hours</option>
+                                    <option>Custom</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <button type="submit" class="reminder-btn w-100 py-3">
+                                <i class="fas fa-save me-2"></i> Save Reminder
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Example JavaScript for reminder functionality
+        document.querySelectorAll('.reminder-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                alert('Reminder set successfully! We will notify you when it\'s time for your medication.');
+                // In a real implementation, you would connect this to your reminder system
+            });
+        });
+    </script>
+</body>
+</html>

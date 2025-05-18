@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Video Consultation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --accent-color: #198754;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e7e9ed;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .consultation-hero {
+            background: linear-gradient(135deg, #0d6efd, #198754);
+            color: white;
+            padding: 3rem 0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .doctor-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .doctor-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .specialty-badge {
+            background-color: #e9ecef;
+            color: var(--dark-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+        
+        .consultation-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .video-container {
+            background-color: #212529;
+            border-radius: 10px;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .video-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .end-call {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .mute, .video-off {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .chat-container {
+            background-color: white;
+            border-radius: 10px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .chat-header {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+        }
+        
+        .message-doctor {
+            text-align: right;
+        }
+        
+        .message-content {
+            padding: 10px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            max-width: 80%;
+        }
+        
+        .message-patient .message-content {
+            background-color: #f1f1f1;
+            border-top-left-radius: 0;
+        }
+        
+        .message-doctor .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            border-top-right-radius: 0;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .consultation-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-upcoming {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-completed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="bg-primary text-white py-2 d-none d-md-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <i class="fas fa-phone-alt me-2"></i> 24/7 Customer Support: 1-800-MEDICARE
+                </div>
+                <div class="col-md-6 text-end">
+                    <i class="fas fa-truck me-2"></i> Free shipping on orders over $50
+                    <span class="mx-3">|</span>
+                    <i class="fas fa-map-marker-alt me-2"></i> Track Order
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" height="50">
+            </a>
+            
+            <!-- Search Bar -->
+            <div class="mx-lg-3 flex-grow-1">
+                <div class="autocomplete" style="position: relative;">
+                    <input class="form-control search-box" type="search" placeholder="Search medicines, health products..." aria-label="Search">
+                    <button class="btn btn-primary position-absolute end-0 top-0 rounded-pill" type="submit" style="height: 100%;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div id="autocomplete-results" class="autocomplete-items"></div>
+                </div>
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="#"><i class="fas fa-user me-1"></i> Account</a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="#"><i class="fas fa-heart me-1"></i> Wishlist</a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart me-1"></i> Cart <span class="badge bg-danger rounded-pill">3</span></a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="#"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Hero Section -->
+        <div class="consultation-hero">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="display-5 fw-bold mb-3">Video Consultation</h1>
+                        <p class="lead mb-0">Connect with our licensed doctors from the comfort of your home.</p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                        <i class="fas fa-video fa-4x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consultation Section -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Active Consultation -->
+                <div class="consultation-card" id="activeConsultation">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Current Consultation</h3>
+                        <span class="status-badge status-active">In Progress</span>
+                    </div>
+                    
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-user-md fa-5x mb-3"></i>
+                            <h4>Connecting with Dr. Sarah Johnson</h4>
+                            <p class="mb-0">Please wait while we connect you...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <div class="control-btn mute" id="muteBtn">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="control-btn video-off" id="videoBtn">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="control-btn end-call" id="endCallBtn">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Consultation Chat -->
+               <a href="chat consultation.html"> <div class="chat-container">
+                    <div class="chat-header">
+                        Consultation Chat
+                    </div></a>
+                    <div class="chat-messages">
+                        <div class="message message-doctor">
+                            <div class="message-content">
+                                Hello! I'm Dr. Sarah Johnson. How can I help you today?
+                            </div>
+                        </div>
+                        <div class="message message-patient">
+                            <div class="message-content">
+                                Hi Doctor, I've been having headaches for the past 3 days.
+                            </div>
+                        </div>
+                        <div class="message message-doctor">
+                            <div class="message-content">
+                                I see. Can you describe the pain? Is it sharp or dull?
+                            </div>
+                        </div>
+                        <div class="message message-patient">
+                            <div class="message-content">
+                                It's a dull pain, mostly in my forehead area.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Type your message...">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-paper-plane"></i>
+                            </button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Consultation Info -->
+                <div class="consultation-info mb-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg" alt="Doctor" class="rounded-circle me-3" width="80" height="80">
+                        <div>
+                            <h4 class="mb-0">Dr. Sarah Johnson</h4>
+                            <p class="text-muted mb-1">General Physician</p>
+                            <div class="rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <span class="small ms-1">4.7 (128 reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Consultation Details</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Date:</span>
+                            <span>June 15, 2023</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Time:</span>
+                            <span>10:00 AM - 10:30 AM</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Duration:</span>
+                            <span>30 minutes</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Fee:</span>
+                            <span class="fw-bold">$49.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Patient Information</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Name:</span>
+                            <span>John Doe</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Age:</span>
+                            <span>32 years</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Gender:</span>
+                            <span>Male</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-outline-primary w-100 mb-3">
+                        <i class="fas fa-file-medical me-2"></i> View Medical History
+                    </button>
+                    <button class="btn btn-outline-primary w-100">
+                        <i class="fas fa-prescription me-2"></i> Generate Prescription
+                    </button>
+                </div>
+                
+                <!-- Upcoming Consultations -->
+                <div class="consultation-info">
+                    <h5 class="mb-3">Upcoming Consultations</h5>
+                    
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">Dr. Michael Chen</h6>
+                            <p class="text-muted small mb-1">June 20, 2023 at 2:00 PM</p>
+                            <span class="status-badge status-upcoming">Scheduled</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary">Details</button>
+                    </div>
+                    
+                    <div class="d-flex align-items-start">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">Dr. Emily Wilson</h6>
+                            <p class="text-muted small mb-1">June 25, 2023 at 11:00 AM</p>
+                            <span class="status-badge status-upcoming">Scheduled</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Past Consultations Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4">Past Consultations</h3>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover bg-white rounded-3 overflow-hidden">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Doctor</th>
+                                <th>Specialty</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>May 28, 2023</td>
+                                <td>Dr. Robert Smith</td>
+                                <td>Cardiology</td>
+                                <td>25 min</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td><button class="btn btn-sm btn-outline-primary">View Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>April 15, 2023</td>
+                                <td>Dr. Sarah Johnson</td>
+                                <td>General Physician</td>
+                                <td>30 min</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td><button class="btn btn-sm btn-outline-primary">View Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>March 5, 2023</td>
+                                <td>Dr. Lisa Wong</td>
+                                <td>Dermatology</td>
+                                <td>20 min</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td><button class="btn btn-sm btn-outline-primary">View Details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" class="mb-3" height="50">
+                    <p class="text-muted small">Your trusted online pharmacy for genuine medicines, health products, and doctor consultations.</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Prescription</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">OTC Medicines</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Wellness</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Personal Care</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Devices</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Deals</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Doctor Consultation</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Medicine Reminder</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Tools</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Symptom Checker</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">BMI Calculator</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Information</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Terms & Conditions</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Shipping Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Return Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-3">
+                    <h5 class="h6 mb-3">Newsletter</h5>
+                    <p class="small text-muted">Subscribe to get health tips and special offers</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control form-control-sm" placeholder="Your email">
+                        <button class="btn btn-primary btn-sm" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small mb-0">&copy; 2023 MediCare. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                        <img src="https://via.placeholder.com/40x25?text=Visa" alt="Visa" class="img-fluid">
+                        <img src="https://via.placeholder.com/40x25?text=MC" alt="Mastercard" class="img-fluid">
+                        <img src="https://via.placeholder.com/40x25?text=Amex" alt="Amex" class="img-fluid">
+                        <img src="https://via.placeholder.com/40x25?text=PayPal" alt="PayPal" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mute button functionality
+            const muteBtn = document.getElementById('muteBtn');
+            muteBtn.addEventListener('click', function() {
+                this.classList.toggle('bg-primary');
+                const icon = this.querySelector('i');
+                if (this.classList.contains('bg-primary')) {
+                    icon.classList.remove('fa-microphone');
+                    icon.classList.add('fa-microphone-slash');
+                } else {
+                    icon.classList.remove('fa-microphone-slash');
+                    icon.classList.add('fa-microphone');
+                }
+            });
+            
+            // Video button functionality
+            const videoBtn = document.getElementById('videoBtn');
+            videoBtn.addEventListener('click', function() {
+                this.classList.toggle('bg-primary');
+                const icon = this.querySelector('i');
+                if (this.classList.contains('bg-primary')) {
+                    icon.classList.remove('fa-video');
+                    icon.classList.add('fa-video-slash');
+                } else {
+                    icon.classList.remove('fa-video-slash');
+                    icon.classList.add('fa-video');
+                }
+            });
+            
+            // End call button functionality
+            const endCallBtn = document.getElementById('endCallBtn');
+            endCallBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to end the consultation?')) {
+                    const activeConsultation = document.getElementById('activeConsultation');
+                    activeConsultation.innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-check-circle text-success mb-3" style="font-size: 3rem;"></i>
+                            <h3 class="mb-3">Consultation Ended</h3>
+                            <p class="text-muted mb-4">Your consultation with Dr. Sarah Johnson has been completed.</p>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-file-medical me-2"></i> View Prescription
+                            </button>
+                        </div>
+                    `;
+                }
+            });
+            
+            // Simulate connection after 3 seconds
+            setTimeout(function() {
+                const videoPlaceholder = document.querySelector('.video-placeholder');
+                videoPlaceholder.innerHTML = `
+                    <div class="position-relative h-100 w-100">
+                        <div class="position-absolute top-0 end-0 bg-dark p-2 rounded-bl-lg">
+                            <div style="width: 120px; height: 90px; background-color: #495057;" class="rounded">
+                                <div class="h-100 d-flex flex-column align-items-center justify-content-center text-white">
+                                    <i class="fas fa-user mb-1"></i>
+                                    <small>You</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-100 d-flex flex-column align-items-center justify-content-center text-white">
+                            <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg" 
+                                 alt="Doctor" class="rounded-circle mb-3" width="120">
+                            <h4>Dr. Sarah Johnson</h4>
+                            <p class="mb-0">General Physician</p>
+                        </div>
+                    </div>
+                `;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

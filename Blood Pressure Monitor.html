@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Blood Pressure Monitor - MediCare</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --accent-color: #198754;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e7e9ed;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-header {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .product-gallery {
+            border-right: 1px solid #eee;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            padding: 5px;
+        }
+        
+        .thumbnail:hover, .thumbnail.active {
+            border-color: var(--primary-color);
+        }
+        
+        .product-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .product-brand {
+            color: var(--secondary-color);
+            font-size: 18px;
+        }
+        
+        .product-price {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--danger-color);
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: var(--secondary-color);
+            font-size: 18px;
+        }
+        
+        .discount-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .product-meta {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            margin: 20px 0;
+        }
+        
+        .meta-item {
+            margin-bottom: 8px;
+        }
+        
+        .meta-label {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .meta-value {
+            color: var(--secondary-color);
+        }
+        
+        .quantity-selector {
+            width: 100px;
+            display: inline-block;
+            margin-right: 15px;
+        }
+        
+        .btn-add-to-cart {
+            padding: 10px 25px;
+            font-weight: 600;
+        }
+        
+        .product-tabs {
+            margin-top: 40px;
+        }
+        
+        .nav-tabs .nav-link {
+            font-weight: 600;
+            color: var(--secondary-color);
+            border: none;
+            padding: 12px 20px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            background-color: transparent;
+        }
+        
+        .tab-content {
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        
+        .related-products {
+            margin-top: 50px;
+        }
+        
+        .product-card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .product-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .badge-discount {
+            background-color: var(--accent-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="bg-primary text-white py-2 d-none d-md-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <i class="fas fa-phone-alt me-2"></i> 24/7 Customer Support: 1-800-MEDICARE
+                </div>
+                <div class="col-md-6 text-end">
+                    <i class="fas fa-truck me-2"></i> Free shipping on orders over $50
+                    <span class="mx-3">|</span>
+                    <i class="fas fa-map-marker-alt me-2"></i> Track Order
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" height="50">
+            </a>
+            
+            <!-- Search Bar -->
+            <div class="mx-lg-3 flex-grow-1">
+                <div class="autocomplete" style="position: relative;">
+                    <input class="form-control search-box" type="search" placeholder="Search medicines, health products..." aria-label="Search">
+                    <button class="btn btn-primary position-absolute end-0 top-0 rounded-pill" type="submit" style="height: 100%;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div id="autocomplete-results" class="autocomplete-items"></div>
+                </div>
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="account.html"><i class="fas fa-user me-1"></i> Account</a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="wishlist.html"><i class="fas fa-heart me-1"></i> Wishlist</a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="cart.html"><i class="fas fa-shopping-cart me-1"></i> Cart <span class="badge bg-danger rounded-pill">3</span></a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link" href="login.html"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Section -->
+    <div class="container my-5">
+        <div class="product-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="health-devices.html">Health Devices</a></li>
+                    <li class="breadcrumb-item"><a href="monitors.html">Monitors</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Blood Pressure Monitor</li>
+                </ol>
+            </nav>
+            
+            <div class="row">
+                <div class="col-lg-5 product-gallery">
+                    <img src="https://images.apollo247.in/pub/media/catalog/product/a/p/apb0063-02.jpg" alt="Digital Blood Pressure Monitor" class="main-image" id="mainImage">
+                    
+                    <div class="d-flex gap-2">
+                        <img src="https://images.apollo247.in/pub/media/catalog/product/a/p/apb0063-02.jpg" alt="Blood Pressure Monitor Front" class="thumbnail active" onclick="changeImage(this)">
+                        <img src="https://www.heart.org/-/media/Images/Health-Tools/Blood-Pressure/Blood-Pressure-Monitor.jpg" alt="Blood Pressure Monitor in Use" class="thumbnail" onclick="changeImage(this)">
+                        <img src="https://5.imimg.com/data5/SELLER/Default/2021/12/QI/YD/RA/3024949/omron-hme-7120-blood-pressure-monitor-500x500.jpg" alt="Blood Pressure Monitor Display" class="thumbnail" onclick="changeImage(this)">
+                    </div>
+                </div>
+                
+                <div class="col-lg-7">
+                    <h1 class="product-title">Digital Blood Pressure Monitor</h1>
+                    <p class="product-brand">by CarePlus</p>
+                    
+                    <div class="d-flex align-items-center my-3">
+                        <div class="me-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star-half-alt text-warning"></i>
+                            <span class="ms-2">(328 reviews)</span>
+                        </div>
+                        <span class="badge bg-success">In Stock</span>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="product-price me-3">$49.99</span>
+                        <span class="original-price me-3">$55.50</span>
+                        <span class="discount-badge">10% OFF</span>
+                    </div>
+                    
+                    <div class="product-meta">
+                        <div class="row">
+                            <div class="col-md-6 meta-item">
+                                <span class="meta-label">Type:</span>
+                                <span class="meta-value">Upper Arm</span>
+                            </div>
+                            <div class="col-md-6 meta-item">
+                                <span class="meta-label">Cuff Size:</span>
+                                <span class="meta-value">22-32 cm</span>
+                            </div>
+                            <div class="col-md-6 meta-item">
+                                <span class="meta-label">Memory:</span>
+                                <span class="meta-value">120 readings</span>
+                            </div>
+                            <div class="col-md-6 meta-item">
+                                <span class="meta-label">Power:</span>
+                                <span class="meta-value">4 AA batteries (included)</span>
+                            </div>
+                            <div class="col-md-6 meta-item">
+                                <span class="meta-label">SKU:</span>
+                                <span class="meta-value">BP-ARM-01</span>
+                            </div>
+                            <div class="col-md-6 meta-item">
+                                <span class="meta-label">Warranty:</span>
+                                <span class="meta-value">3 years</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5 class="mb-3">Key Features:</h5>
+                    <ul class="mb-4">
+                        <li>Clinically validated for accuracy</li>
+                        <li>Large LCD display with backlight</li>
+                        <li>Irregular heartbeat detector</li>
+                        <li>Automatic inflation with adjustable levels</li>
+                        <li>WHO blood pressure classification indicator</li>
+                        <li>Includes carrying case and instruction manual</li>
+                    </ul>
+                    
+                    <div class="d-flex align-items-center mb-4">
+                        <label for="quantity" class="me-3 fw-bold">Quantity:</label>
+                        <select class="form-select quantity-selector" id="quantity">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-add-to-cart me-3" onclick="addToCart()">
+                        <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                    </button>
+                    <button class="btn btn-outline-secondary">
+                        <i class="fas fa-heart me-2"></i> Add to Wishlist
+                    </button>
+                    
+                    <div class="mt-4">
+                        <p class="mb-2"><i class="fas fa-truck text-primary me-2"></i> Free delivery on orders over $50</p>
+                        <p class="mb-2"><i class="fas fa-shield-alt text-primary me-2"></i> 3-year manufacturer warranty</p>
+                        <p class="mb-0"><i class="fas fa-undo text-primary me-2"></i> 30-day money back guarantee</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Key Features Section -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card text-center">
+                    <i class="fas fa-heartbeat feature-icon"></i>
+                    <h5>Accurate Readings</h5>
+                    <p class="text-muted small">Clinically validated for precise blood pressure and pulse measurements</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card text-center">
+                    <i class="fas fa-memory feature-icon"></i>
+                    <h5>120 Memory Slots</h5>
+                    <p class="text-muted small">Stores readings for two users (60 each) with date and time stamp</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card text-center">
+                    <i class="fas fa-heart feature-icon"></i>
+                    <h5>Irregular HB Detection</h5>
+                    <p class="text-muted small">Detects irregular heartbeats during measurement</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card text-center">
+                    <i class="fas fa-battery-full feature-icon"></i>
+                    <h5>Long Battery Life</h5>
+                    <p class="text-muted small">Includes 4 AA batteries with approximately 300 measurements</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Tabs -->
+        <div class="product-tabs">
+            <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">Description</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab">Specifications</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="how-to-tab" data-bs-toggle="tab" data-bs-target="#how-to" type="button" role="tab">How To Use</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="productTabsContent">
+                <div class="tab-pane fade show active" id="description" role="tabpanel">
+                    <h4>Product Description</h4>
+                    <p>The CarePlus Digital Blood Pressure Monitor is a clinically validated upper arm blood pressure monitor designed for home use. It provides accurate and reliable blood pressure and pulse rate measurements with its advanced measuring technology.</p>
+                    <p>This monitor features a large LCD display with backlight for easy reading, automatic inflation with adjustable levels, and an irregular heartbeat detector. The cuff fits arms with circumferences of 22-32 cm (8.7-12.6 inches) and includes a cuff wrap guide to ensure proper placement.</p>
+                    <p>The device stores up to 120 readings (60 per user) with date and time stamp, allowing you to track your blood pressure over time. It also includes a WHO blood pressure classification indicator to help you understand your readings.</p>
+                    <p>Package includes the blood pressure monitor, standard cuff (22-32 cm), 4 AA batteries, instruction manual, and a convenient carrying case.</p>
+                </div>
+                <div class="tab-pane fade" id="specs" role="tabpanel">
+                    <h4>Technical Specifications</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th>Measurement Range</th>
+                                        <td>Pressure: 0-280 mmHg<br>Pulse: 40-180 beats/min</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Accuracy</th>
+                                        <td>Pressure: ±3 mmHg<br>Pulse: ±5%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cuff Size</th>
+                                        <td>22-32 cm (8.7-12.6 inches)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Memory</th>
+                                        <td>120 readings (60 per user)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th>Power Source</th>
+                                        <td>4 AA batteries (included)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Battery Life</th>
+                                        <td>Approx. 300 measurements</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Display</th>
+                                        <td>Large LCD with backlight</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Dimensions</th>
+                                        <td>135mm × 125mm × 85mm</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Weight</th>
+                                        <td>Approx. 450g (including batteries)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="how-to" role="tabpanel">
+                    <h4>How To Use</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="mt-4">Preparation</h5>
+                            <ol>
+                                <li>Avoid eating, smoking, exercising, and consuming caffeine for 30 minutes before measurement</li>
+                                <li>Rest for 5 minutes before taking a measurement</li>
+                                <li>Sit in a chair with your feet flat on the floor</li>
+                                <li>Place your arm on a table so the cuff is at heart level</li>
+                            </ol>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mt-4">Measurement Steps</h5>
+                            <ol>
+                                <li>Wrap the cuff around your upper arm (1-2 cm above elbow)</li>
+                                <li>Press the START button to begin inflation</li>
+                                <li>Remain still and don't talk during measurement</li>
+                                <li>View your results on the display when measurement is complete</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i> For most accurate results, take measurements at the same time each day and record your readings.
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="reviews" role="tabpanel">
+                    <h4>Customer Reviews</h4>
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="me-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <span class="ms-2">4.7 out of 5</span>
+                            </div>
+                            <span class="text-muted">Based on 328 reviews</span>
+                        </div>
+                        <button class="btn btn-sm btn-primary">Write a Review</button>
+                    </div>
+                    
+                    <div class="review-item mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5>Very accurate compared to doctor's office</h5>
+                            <div>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                        </div>
+                        <p class="text-muted small">By Robert T. on January 12, 2023</p>
+                        <p>I compared readings with my doctor's office and they were within 2 points. The large display is easy to read and the memory function helps me track my progress. Very satisfied with this purchase.</p>
+                    </div>
+                    
+                    <div class="review-item mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5>Great for home monitoring</h5>
+                            <div>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                            </div>
+                        </div>
+                        <p class="text-muted small">By Margaret L. on February 5, 2023</p>
+                        <p>My doctor recommended I monitor my blood pressure at home. This device is simple to use and the cuff is comfortable. The carrying case makes it easy to take with me when traveling.</p>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-outline-primary">Load More Reviews</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Products -->
+        <div class="related-products">
+            <h3 class="mb-4">Frequently Bought Together</h3>
+            <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card bg-white p-3 h-100">
+                        <div class="position-relative mb-3">
+                            <img src="https://www.checkcharm.com/wp-content/uploads/2023/12/image-2183.png" alt="Product" class="img-fluid">
+                            <span class="badge badge-discount position-absolute top-0 start-0">20% OFF</span>
+                        </div>
+                        <h6 class="mb-1">Blood Glucose Monitor</h6>
+                        <p class="text-muted small mb-2">With 25 Test Strips</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold text-primary">$49.00</span>
+                                <span class="text-muted text-decoration-line-through small ms-2">$49.99</span>
+                            </div>
+                            <span class="badge bg-success small">In Stock</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card bg-white p-3 h-100">
+                        <div class="position-relative mb-3">
+                            <img src="https://5.imimg.com/data5/SELLER/Default/2021/12/QI/YD/RA/3024949/omron-hme-7120-blood-pressure-monitor-500x500.jpg" alt="Product" class="img-fluid">
+                        </div>
+                        <h6 class="mb-1">Extra Large Blood Pressure Cuff</h6>
+                        <p class="text-muted small mb-2">32-42 cm (12.6-16.5 inches)</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold text-primary">$19.99</span>
+                            </div>
+                            <span class="badge bg-success small">In Stock</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card bg-white p-3 h-100">
+                        <div class="position-relative mb-3">
+                            <img src="https://m.media-amazon.com/images/I/61+5X0jqQ8L._AC_UF1000,1000_QL80_.jpg" alt="Product" class="img-fluid">
+                        </div>
+                        <h6 class="mb-1">Replacement AA Batteries (4-Pack)</h6>
+                        <p class="text-muted small mb-2">Long-lasting alkaline batteries</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold text-primary">$5.99</span>
+                            </div>
+                            <span class="badge bg-success small">In Stock</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card bg-white p-3 h-100">
+                        <div class="position-relative mb-3">
+                            <img src="https://www.heart.org/-/media/Images/Health-Tools/Blood-Pressure/Blood-Pressure-Tracker.jpg" alt="Product" class="img-fluid">
+                        </div>
+                        <h6 class="mb-1">Blood Pressure Log Book</h6>
+                        <p class="text-muted small mb-2">120-page tracking journal</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold text-primary">$8.49</span>
+                            </div>
+                            <span class="badge bg-success small">In Stock</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <img src="https://okcredit-blog-images-prod.storage.googleapis.com/2021/04/pharmacy-business1--1-.jpg" alt="MediCare Logo" class="mb-3" height="50">
+                    <p class="text-muted small">Your trusted online pharmacy for genuine medicines, health products, and doctor consultations.</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Shop</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Prescription</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">OTC Medicines</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Wellness</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Personal Care</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Devices</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Deals</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">Doctor Consultation</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Medicine Reminder</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Tools</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Health Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Symptom Checker</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">BMI Calculator</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="h6 mb-3">Information</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted small">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Terms & Conditions</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Shipping Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted small">Return Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-3">
+                    <h5 class="h6 mb-3">Newsletter</h5>
+                    <p class="small text-muted">Subscribe to get health tips and special offers</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control form-control-sm" placeholder="Your email">
+                        <button class="btn btn-primary btn-sm" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small mb-0">&copy; 2023 MediCare. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                        <img src="https://pngimg.com/uploads/visa/visa_PNG4.png" alt="Visa" width="40">
+                        <img src="https://pngimg.com/uploads/mastercard/mastercard_PNG23.png" alt="Mastercard" width="40">
+                        <img src="https://images.fastcompany.net/image/upload/w_596,c_limit,q_auto:best,f_auto,fl_lossy/wp-cms/uploads/sites/4/2018/04/4-you-might-not-notice-amex-new-brand.jpg" alt="Amex" width="40">
+                        <img src="https://seeklogo.com/images/P/paypal-logo-484B6FE744-seeklogo.com.png" alt="PayPal" width="40">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Change product image when thumbnail is clicked
+        function changeImage(element) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = element.src;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+        
+        // Add to cart function
+        function addToCart() {
+            const quantity = document.getElementById('quantity').value;
+            alert(`${quantity} Blood Pressure Monitor(s) added to your cart!`);
+            // In a real application, you would add the item to a shopping cart system here
+        }
+    </script>
+</body>
+</html>
